@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ניהול עסקים</title>
+  <style>
+    :root{
+      --bg:#06121a;
+      --panel:#0b1f2a;
+      --panel2:#0f2c3a;
+      --field:#071822;
+      --line:rgba(255,255,255,.08);
+
+      --text:#e9faff;
+      --muted:#7fa6b8;
+
+      --primary:#2bd4ff;
+      --primary2:#00a8cc;
+      --accent:#1de9b6;
+
+      --ok:#1de9b6;
+      --danger:#ff7b7b;
+      --blue:#2bd4ff;
+
+      --shadow:0 22px 60px rgba(0,0,0,.4);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:Arial,"Heebo",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(230,193,115,.12), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(114,201,255,.07), transparent 28%),
+        linear-gradient(180deg,#0b111d 0%,#070b13 100%);
+    }
+    .page{max-width:1180px;margin:0 auto;padding:22px 14px 34px}
+    .hero{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:18px;
+      padding:24px;border-radius:30px;border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(23,34,55,.95),rgba(12,18,30,.95));
+      box-shadow:var(--shadow);margin-bottom:18px;
+    }
+    .hero h1{margin:0 0 8px;font-size:32px;color:var(--primary)}
+    .hero p{margin:0;color:var(--muted);line-height:1.7;font-size:14px}
+    .pill{
+      white-space:nowrap;display:inline-flex;align-items:center;border-radius:999px;
+      padding:9px 13px;color:#d8fbe6;background:rgba(140,240,181,.10);
+      border:1px solid rgba(140,240,181,.22);font-size:12px;font-weight:900;
+    }
+    .layout{display:grid;grid-template-columns:390px 1fr;gap:18px;align-items:start}
+    .card{
+      border-radius:28px;border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(18,26,41,.75),rgba(9,14,24,.75));
+       backdrop-filter: blur(12px);
+       border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);padding:18px;
+    }
+    .sticky{position:sticky;top:14px}
+    .card h2{margin:0;color:var(--primary);font-size:22px}
+    .small-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
+    label{display:block;margin:12px 4px 7px;color:var(--muted);font-size:12px}
+    input,select{
+      width:100%;border:1px solid rgba(255,255,255,.09);outline:none;border-radius:18px;
+      padding:14px 15px;background:var(--field);color:var(--text);font-size:15px;
+    }
+    input:focus,select:focus{border-color:rgba(230,193,115,.45);box-shadow:0 0 0 3px rgba(230,193,115,.08)}
+    .ltr{direction:ltr;text-align:left}
+    .hint{font-size:11px;color:rgba(168,179,199,.76);line-height:1.55;margin:6px 4px 0}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn{
+      border:none;cursor:pointer;border-radius:18px;padding:14px 16px;font-weight:900;
+      transition:.18s transform,.18s opacity,.18s border-color,.18s background;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .btn:hover{
+        transform:translateY(-2px) scale(1.02);
+        box-shadow:0 0 12px rgba(43,212,255,.4), 0 0 22px rgba(29,233,182,.25);
+    }
+    .btn.primary{
+      box-shadow:0 0 14px rgba(43,212,255,.5), 0 0 30px rgba(0,168,204,.25);
+      width:100%;color:#00222c;background:linear-gradient(135deg,var(--primary),var(--primary2));
+      box-shadow:0 14px 32px rgba(201,150,63,.20);margin-top:16px;
+    }
+    .btn.ghost{color:var(--text);background:#111b2c;border:1px solid rgba(255,255,255,.10)}
+    .btn.danger{color:#ffc8c8;background:rgba(255,123,123,.08);border:1px solid rgba(255,123,123,.26)}
+    .btn.small{padding:12px 13px;border-radius:16px;font-size:12px}
+    .form-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .status{min-height:22px;margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6;word-break:break-word}
+    .topbar{display:flex;gap:10px;margin-bottom:14px;align-items:center}
+    .business-list{display:grid;gap:14px}
+    .business-card{
+      transition:0.25s ease;
+      border-radius:26px;border:1px solid rgba(255,255,255,.09);
+      background:linear-gradient(180deg,rgba(23,34,55,.90),rgba(12,18,30,.92));
+      padding:17px;overflow:hidden;
+      }
+      .business-card:hover{
+        transform:translateY(-3px);
+        box-shadow:0 0 18px rgba(43,212,255,.2);
+      }
+    }
+    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+    .business-title{font-size:22px;font-weight:900;color:#fff0c6;margin-bottom:6px}
+    .meta{color:var(--muted);font-size:13px;line-height:1.75}
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;
+      font-size:12px;font-weight:900;background:rgba(140,240,181,.12);color:#bcf8d1;
+      border:1px solid rgba(140,240,181,.22);white-space:nowrap;
+    }
+    .badge.pro{background:rgba(114,201,255,.11);color:#b9e9ff;border-color:rgba(114,201,255,.24)}
+    .badge.premium{background:rgba(230,193,115,.12);color:#ffe8b2;border-color:rgba(230,193,115,.25)}
+    .link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}
+    .link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+    .link-box{
+      direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;
+      min-height:42px;display:flex;align-items:center;
+    }
+    .mini-btn{
+      min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);
+      background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px;
+    }
+    .actions{display:grid;grid-template-columns:1fr 1fr 90px;gap:8px;margin-top:14px}
+    .empty{
+      text-align:center;padding:36px 12px;color:var(--muted);line-height:1.8;
+      border:1px dashed rgba(255,255,255,.10);border-radius:22px;background:rgba(255,255,255,.02);
+    }
+    .toast{
+      position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);
+      opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;
+      border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);
+      background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text);
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
+    @media(max-width:900px){
+      .hero{flex-direction:column}.layout{grid-template-columns:1fr}.sticky{position:static}
+      .topbar,.row,.form-actions,.actions,.link-row{grid-template-columns:1fr;display:grid}
+      .mini-btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <h1>ניהול עסקים</h1>
+        <p>גרסה נקייה: כל העסק נשמר רק ב־businessSettings. אין יותר כפילות מול businesses.</p>
+      </div>
+      <div class="pill">businessSettings בלבד</div>
+    </section>
+
+    <section class="layout">
+      <aside class="card sticky">
+        <h2 id="formTitle">הוספת עסק</h2>
+        <div class="small-note">יצירה או עריכה של עסק מתוך מקור מידע אחד.</div>
+
+        <label>שם העסק</label>
+        <input id="businessName" placeholder="לדוגמה: מספרת אליהו" />
+
+        <label>businessId</label>
+        <input id="businessId" class="ltr" placeholder="eliyahu-barber" />
+        <div class="hint">אנגלית, מספרים ומקף בלבד. לדוגמה: shimon-barber</div>
+
+        <label>מספר וואטסאפ</label>
+        <input id="whatsappNumber" class="ltr" inputmode="numeric" maxlength="12" placeholder="9725XXXXXXXX" />
+        <div class="hint">חייב להתחיל ב־972 ולהיות בדיוק 12 ספרות.</div>
+
+        <div class="row">
+          <div>
+            <label>חבילה</label>
+            <select id="plan">
+              <option value="basic">בסיסי</option>
+              <option value="pro">מתקדם</option>
+              <option value="premium">פרימיום</option>
+            </select>
+          </div>
+          <div>
+            <label>קוד בעל עסק</label>
+            <input id="ownerCode" inputmode="numeric" maxlength="4" placeholder="1234" />
+          </div>
+        </div>
+
+        <button class="btn primary" id="saveBtn">שמור עסק</button>
+
+        <div class="form-actions">
+          <button class="btn ghost" id="resetBtn">נקה טופס</button>
+          <button class="btn ghost" id="refreshBtn">רענן</button>
+        </div>
+
+        <div class="status" id="saveStatus"></div>
+      </aside>
+
+      <section class="card">
+        <h2>העסקים שלי</h2>
+        <div class="small-note">הרשימה נטענת ישירות מתוך businessSettings.</div>
+
+        <div class="topbar" style="margin-top:14px">
+          <input id="searchInput" placeholder="חפש עסק / ID / מספר..." />
+        </div>
+
+        <div id="businessList" class="business-list">
+          <div class="empty">טוען עסקים...</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCba0XlBoAWJ1eiH6wqer74sSiMyRKfK2s",
+      authDomain: "game1-9d372.firebaseapp.com",
+      projectId: "game1-9d372",
+      storageBucket: "game1-9d372.appspot.com",
+      messagingSenderId: "387028062033",
+      appId: "1:387028062033:web:7bf29040c7bb4b15d54d70"
+    };
+
+    if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const COLLECTION = "businessSettings";
+    const APP_BASE_URL = "https://galhadad-app.github.io/Master-B/index.html";
+
+    const DEFAULT_WORKING_HOURS = {
+      sunday:{start:"10:00",end:"20:00",closed:false},
+      monday:{start:"10:00",end:"20:00",closed:false},
+      tuesday:{start:"10:00",end:"20:00",closed:false},
+      wednesday:{start:"10:00",end:"20:00",closed:false},
+      thursday:{start:"10:00",end:"20:00",closed:false},
+      friday:{start:"09:00",end:"14:00",closed:false},
+      saturday:{start:"",end:"",closed:true}
+    };
+
+    const DEFAULT_SERVICES = [
+      {text:"תספורת",price:"60",label:"תספורת - ₪60",value:"תספורת - ₪60"},
+      {text:"תספורת + זקן",price:"80",label:"תספורת + זקן - ₪80",value:"תספורת + זקן - ₪80"},
+      {text:"תספורת ילד",price:"40",label:"תספורת ילד - ₪40",value:"תספורת ילד - ₪40"}
+    ];
+
+    const planLabels = {basic:"בסיסי",pro:"מתקדם",premium:"פרימיום"};
+
+    let businesses = [];
+    let editingId = "";
+    let unsubscribe = null;
+
+    const el = {
+      businessName:document.getElementById("businessName"),
+      businessId:document.getElementById("businessId"),
+      whatsappNumber:document.getElementById("whatsappNumber"),
+      plan:document.getElementById("plan"),
+      ownerCode:document.getElementById("ownerCode"),
+      saveBtn:document.getElementById("saveBtn"),
+      resetBtn:document.getElementById("resetBtn"),
+      refreshBtn:document.getElementById("refreshBtn"),
+      searchInput:document.getElementById("searchInput"),
+      businessList:document.getElementById("businessList"),
+      formTitle:document.getElementById("formTitle"),
+      saveStatus:document.getElementById("saveStatus")
+    };
+
+    function showToast(text, error=false){
+      const t=document.getElementById("toast");
+      t.textContent=text;
+      t.classList.toggle("error",error);
+      t.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer=setTimeout(()=>t.classList.remove("show"),3200);
+    }
+
+    function digits(v){return String(v||"").replace(/\D/g,"")}
+    function cleanPhone(v){return digits(v).slice(0,12)}
+    function validPhone(v){return /^972\d{9}$/.test(String(v||""))}
+    function cleanId(v){
+      return String(v||"").trim().toLowerCase()
+        .replace(/\s+/g,"-")
+        .replace(/[^a-z0-9-]/g,"")
+        .replace(/-+/g,"-")
+        .replace(/^-|-$/g,"");
+    }
+    function html(v){
+      return String(v||"")
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+    }
+    function appLink(id){return APP_BASE_URL+"?business="+encodeURIComponent(id)}
+    function waLink(id,phone){return "https://wa.me/"+phone+"?text="+encodeURIComponent("start_"+id)}
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("הועתק");
+      }catch(e){
+        const i=document.createElement("input");
+        i.value=text;document.body.appendChild(i);i.select();document.execCommand("copy");i.remove();
+        showToast("הועתק");
+      }
+    }
+
+    function resetForm(){
+      editingId="";
+      el.formTitle.textContent="הוספת עסק";
+      el.saveBtn.textContent="שמור עסק";
+      el.businessName.value="";
+      el.businessId.value="";
+      el.businessId.disabled=false;
+      el.whatsappNumber.value="";
+      el.plan.value="basic";
+      el.ownerCode.value="1234";
+      el.saveStatus.textContent="";
+    }
+
+    function fillForm(id){
+      const b=businesses.find(x=>x.id===id);
+      if(!b) return;
+      editingId=id;
+      el.formTitle.textContent="עריכת עסק";
+      el.saveBtn.textContent="עדכן עסק";
+      el.businessName.value=b.businessName||b.name||"";
+      el.businessId.value=id;
+      el.businessId.disabled=true;
+      el.whatsappNumber.value=cleanPhone(b.whatsappNumber||b.phone||"");
+      el.plan.value=b.plan||"basic";
+      el.ownerCode.value=digits(b.ownerCode||"1234").slice(0,4);
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    async function saveBusiness(){
+      const businessName=el.businessName.value.trim();
+      const businessId=cleanId(el.businessId.value);
+      const whatsappNumber=cleanPhone(el.whatsappNumber.value);
+      const plan=el.plan.value;
+      const ownerCode=digits(el.ownerCode.value).slice(0,4)||"1234";
+
+      el.businessId.value=businessId;
+      el.whatsappNumber.value=whatsappNumber;
+      el.ownerCode.value=ownerCode;
+
+      if(!businessName){showToast("חסר שם עסק",true);return}
+      if(!businessId){showToast("חסר businessId תקין",true);return}
+      if(!validPhone(whatsappNumber)){showToast("מספר וואטסאפ חייב להתחיל ב־972 ולהיות 12 ספרות",true);return}
+
+      el.saveBtn.disabled=true;
+      el.saveStatus.textContent="שומר ל־businessSettings...";
+
+      try{
+        const now=Date.now();
+        const ref=db.collection(COLLECTION).doc(businessId);
+        const existing=await ref.get();
+        const data=existing.exists ? existing.data()||{} : {};
+
+        const payload={
+          businessId,
+          businessName,
+          name:businessName,
+          whatsappNumber,
+          phone:whatsappNumber,
+          plan,
+          ownerCode,
+          appUrl:appLink(businessId),
+          whatsappUrl:waLink(businessId,whatsappNumber),
+          updatedAtMs:now,
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        // לא דורסים שעות/שירותים/מיתוג קיימים. מוסיפים רק אם חסר.
+        if(!data.workingHours) payload.workingHours=DEFAULT_WORKING_HOURS;
+        if(!Array.isArray(data.services)||!data.services.length) payload.services=DEFAULT_SERVICES;
+        if(!data.logoSrc) payload.logoSrc = "logo.png";
+        if(!data.heroBg) payload.heroBg = "background-behind-logo.png";
+        if(!data.bookingTitle) payload.bookingTitle = "קביעת תור!";
+        if(!data.businessTypeLabel) payload.businessTypeLabel = "מספרה";
+        if(!data.ownerBadge) payload.ownerBadge = "עמוד בעל העסק";
+
+        if(!existing.exists){
+          payload.createdAtMs=now;
+          payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+        }
+
+        await ref.set(payload,{merge:true});
+
+        showToast("העסק נשמר בהצלחה");
+        el.saveStatus.textContent="נשמר בהצלחה ב־businessSettings בלבד";
+        resetForm();
+      }catch(err){
+        console.error(err);
+        el.saveStatus.textContent="שגיאה: "+(err.message||err);
+        showToast("השמירה נכשלה. בדוק הרשאות Firestore",true);
+      }finally{
+        el.saveBtn.disabled=false;
+      }
+    }
+
+    async function deleteBusiness(id){
+      if(!confirm("למחוק את העסק לגמרי מ־businessSettings?")) return;
+      try{
+        await db.collection(COLLECTION).doc(id).delete();
+        showToast("העסק נמחק לגמרי");
+        if(editingId === id) resetForm();
+      }catch(err){
+        console.error(err);
+        showToast("מחיקה נכשלה",true);
+      }
+    }
+
+    function render(){
+      const q=String(el.searchInput.value||"").toLowerCase().trim();
+      const list=businesses.filter(b=>{
+        const t=[b.id,b.businessName,b.name,b.whatsappNumber,b.phone,b.plan].join(" ").toLowerCase();
+        return !q || t.includes(q);
+      });
+
+      if(!list.length){
+        el.businessList.innerHTML='<div class="empty">אין עסקים להצגה. צור עסק חדש מהטופס.</div>';
+        return;
+      }
+
+      el.businessList.innerHTML=list.map(b=>{
+        const id=b.id;
+        const name=b.businessName||b.name||id;
+        const phone=cleanPhone(b.whatsappNumber||b.phone||"");
+        const plan=b.plan||"basic";
+        const app=appLink(id);
+        const wa=validPhone(phone)?waLink(id,phone):"מספר וואטסאפ לא תקין";
+        const badgeClass=plan==="premium"?"premium":(plan==="pro"?"pro":"");
+        return `
+          <div class="business-card">
+            <div class="business-top">
+              <div>
+                <div class="business-title">${html(name)}</div>
+                <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}</div>
+              </div>
+              <span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>
+            </div>
+
+            <div class="link-label">קישור לאפליקציה</div>
+            <div class="link-row">
+              <div class="link-box">${html(app)}</div>
+              <button class="mini-btn" onclick="copyText('${app.replace(/'/g,"\\'")}')">העתק</button>
+            </div>
+
+            <div class="link-label">קישור וואטסאפ</div>
+            <div class="link-row">
+              <div class="link-box">${html(wa)}</div>
+              <button class="mini-btn" onclick="copyText('${String(wa).replace(/'/g,"\\'")}')">העתק</button>
+            </div>
+
+            <div class="actions">
+              <button class="btn ghost small" onclick="fillForm('${id.replace(/'/g,"\\'")}')">ערוך</button>
+              <button class="btn ghost small" onclick="window.open('${app.replace(/'/g,"\\'")}','_blank')">פתח אפליקציה</button>
+              <button class="btn danger small" onclick="deleteBusiness('${id.replace(/'/g,"\\'")}')">מחק</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function subscribe(){
+      if(unsubscribe) unsubscribe();
+      el.businessList.innerHTML='<div class="empty">טוען עסקים...</div>';
+      unsubscribe=db.collection(COLLECTION).orderBy("updatedAtMs","desc").onSnapshot(snap=>{
+        businesses=snap.docs.map(d=>({id:d.id,...d.data()}));
+        render();
+      },err=>{
+        console.error(err);
+        el.businessList.innerHTML='<div class="empty">לא הצלחתי לטעון עסקים.<br>'+html(err.message||err)+'</div>';
+        showToast("טעינת עסקים נכשלה",true);
+      });
+    }
+
+    el.businessId.addEventListener("input",()=>el.businessId.value=cleanId(el.businessId.value));
+    el.whatsappNumber.addEventListener("input",()=>el.whatsappNumber.value=cleanPhone(el.whatsappNumber.value));
+    el.ownerCode.addEventListener("input",()=>el.ownerCode.value=digits(el.ownerCode.value).slice(0,4));
+    el.saveBtn.addEventListener("click",saveBusiness);
+    el.resetBtn.addEventListener("click",resetForm);
+    el.refreshBtn.addEventListener("click",subscribe);
+    el.searchInput.addEventListener("input",render);
+
+    resetForm();
+    subscribe();
+  </script>
+</body>
+</html>
