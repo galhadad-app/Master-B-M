@@ -319,6 +319,8 @@
       const todayKey=toLocalDateString(now);
       const startOfWeek=new Date(now); startOfWeek.setHours(0,0,0,0); startOfWeek.setDate(now.getDate()-now.getDay());
       const endOfWeek=new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate()+7);
+      const startOfMonth=new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth=new Date(now.getFullYear(), now.getMonth()+1, 1);
       const relevant=appointments.filter(a=>appointmentBusinessId(a) === id);
       const customerCounts={};
       relevant.forEach(a=>{
@@ -327,13 +329,14 @@
       });
       const totalCustomers=Object.keys(customerCounts).length;
       const returningCustomers=Object.values(customerCounts).filter(n=>n>1).length;
-      let today=0, week=0;
+      let today=0, week=0, month=0;
       relevant.forEach(a=>{
         const d=appointmentDate(a);
         if(!d || isNaN(d.getTime())) return;
         const key=toLocalDateString(d);
         if(key===todayKey) today++;
         if(d>=startOfWeek && d<endOfWeek) week++;
+        if(d>=startOfMonth && d<endOfMonth) month++;
       });
       let last=null;
       relevant.forEach(a=>{
@@ -341,7 +344,7 @@
         if(!d || isNaN(d.getTime())) return;
         if(!last || d>last.date) last={date:d,a};
       });
-      return {totalCustomers,returningCustomers,today,week,last};
+      return {totalCustomers,returningCustomers,today,week,month,last};
     }
 
     function getBusinessVisitStats(id){
@@ -354,15 +357,19 @@
       startOfWeek.setDate(now.getDate()-now.getDay());
       const endOfWeek=new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate()+7);
+      const startOfMonth=new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth=new Date(now.getFullYear(), now.getMonth()+1, 1);
 
       const todayVisits=Number(visits[todayKey] || 0);
-      let weekVisits=0;
+      let weekVisits=0, monthVisits=0;
       Object.entries(visits).forEach(([dateKey,count])=>{
         if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
         const d=new Date(dateKey+"T12:00:00");
-        if(d>=startOfWeek && d<endOfWeek) weekVisits += Number(count || 0);
+        const n=Number(count || 0);
+        if(d>=startOfWeek && d<endOfWeek) weekVisits += n;
+        if(d>=startOfMonth && d<endOfMonth) monthVisits += n;
       });
-      return {todayVisits,weekVisits};
+      return {todayVisits,weekVisits,monthVisits};
     }
 
     function renderStatsHtml(id){
@@ -377,6 +384,9 @@
         activity=`${html(who)} · ${html(when)}${time ? " · "+html(time) : ""}`;
       }
 
+      const weeklyConversionRate = v.weekVisits > 0 ? Math.round((s.week / v.weekVisits) * 100) : 0;
+      const monthlyConversionRate = v.monthVisits > 0 ? Math.round((s.month / v.monthVisits) * 100) : 0;
+
       const current={
         totalCustomers:s.totalCustomers,
         returningCustomers:s.returningCustomers,
@@ -384,6 +394,8 @@
         week:s.week,
         todayVisits:v.todayVisits,
         weekVisits:v.weekVisits,
+        weeklyConversionRate,
+        monthlyConversionRate,
         activity
       };
       const prev=previousStats[id] || null;
@@ -402,8 +414,8 @@
           <div class="stats-strip" aria-label="כניסות לאפליקציה">
             <div class="stat-item${changed("todayVisits")}"><div class="stat-value">${v.todayVisits}</div><div class="stat-label">כניסות היום</div></div>
             <div class="stat-item${changed("weekVisits")}"><div class="stat-value">${v.weekVisits}</div><div class="stat-label">כניסות השבוע</div></div>
-            <div class="stat-item"><div class="stat-value">-</div><div class="stat-label">נתון נוסף</div></div>
-            <div class="stat-item"><div class="stat-value">-</div><div class="stat-label">נתון נוסף</div></div>
+            <div class="stat-item${changed("weeklyConversionRate")}"><div class="stat-value">${weeklyConversionRate}%</div><div class="stat-label">יחס שבועי</div></div>
+            <div class="stat-item${changed("monthlyConversionRate")}"><div class="stat-value">${monthlyConversionRate}%</div><div class="stat-label">יחס חודשי</div></div>
           </div>
           <div class="activity-line${activityChanged}">פעילות אחרונה: <strong>${activity}</strong></div>
         </div>`;
