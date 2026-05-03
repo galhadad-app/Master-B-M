@@ -69,6 +69,7 @@
     .btn.unfreeze{color:#bcf8d1;background:rgba(29,233,182,.10);border:1px solid rgba(29,233,182,.28)}
     .btn.small{padding:11px 12px;border-radius:15px;font-size:12px}
     .form-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.status{min-height:22px;margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}
+    #saveBtn{margin-top:14px;}
     .add-business-box{padding:0}.add-business-box .btn{min-height:58px;font-size:16px}
     .topbar{display:flex;gap:10px;margin:12px 0 14px;align-items:center}
     .business-list{display:grid;gap:10px}
@@ -525,7 +526,32 @@
         if(d>=startOfWeek && d<endOfWeek) weekVisits += n;
         if(d>=startOfMonth && d<endOfMonth) monthVisits += n;
       });
-      return {todayVisits,weekVisits,monthVisits};
+
+      const whatsappSources=[
+        b.whatsappClicks,
+        b.whatsappVisits,
+        b.waClicks,
+        b.waVisits,
+        b.whatsappStats,
+        b.whatsappEntries
+      ].filter(x=>x && typeof x === "object");
+
+      let todayWhatsapp=0, weekWhatsapp=0, monthWhatsapp=0, totalWhatsapp=0;
+      whatsappSources.forEach(src=>{
+        Object.entries(src).forEach(([dateKey,count])=>{
+          const n=Number(count || 0);
+          if(!n) return;
+          totalWhatsapp += n;
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+          const d=new Date(dateKey+"T12:00:00");
+          if(dateKey===todayKey) todayWhatsapp += n;
+          if(d>=startOfWeek && d<endOfWeek) weekWhatsapp += n;
+          if(d>=startOfMonth && d<endOfMonth) monthWhatsapp += n;
+        });
+      });
+      totalWhatsapp += Number(b.whatsappTotal || b.totalWhatsapp || b.waTotal || 0);
+
+      return {todayVisits,weekVisits,monthVisits,todayWhatsapp,weekWhatsapp,monthWhatsapp,totalWhatsapp};
     }
 
     function monthKeyFromDate(d){
@@ -627,7 +653,7 @@
               <div class="pdf-line-title">לקוחות</div>
               <div class="pdf-metrics">
                 <div class="pdf-metric"><span class="pdf-label">סה״כ לקוחות</span><span class="pdf-value">${r.totalCustomers}</span></div>
-                <div class="pdf-metric"><span class="pdf-label">לקוחות חוזרים</span><span class="pdf-value">${r.returningCustomers}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">לקוחות חדשים</span><span class="pdf-value">${r.returningCustomers}</span></div>
               </div>
             </div>
 
@@ -701,7 +727,9 @@
         const who=appointmentName(a) || appointmentPhone(a) || "לקוח";
         const when=formatHebDate(s.last.date);
         const time=appointmentTime(a);
-        activity=`${html(who)} · ${html(when)}${time ? " · "+html(time) : ""}`;
+        const actionType = a.status === "cancelled" ? "ביטול תור" : "קביעת תור";
+        const dateTime = `${html(when)}${time ? " "+html(time) : ""}`;
+        activity=`${dateTime} · ${actionType}`;
       }
 
       const weeklyConversionRate = v.weekVisits > 0 ? Math.round((s.week / v.weekVisits) * 100) : 0;
@@ -714,6 +742,11 @@
         week:s.week,
         todayVisits:v.todayVisits,
         weekVisits:v.weekVisits,
+        monthVisits:v.monthVisits,
+        totalWhatsapp:v.totalWhatsapp,
+        todayWhatsapp:v.todayWhatsapp,
+        weekWhatsapp:v.weekWhatsapp,
+        monthWhatsapp:v.monthWhatsapp,
         weeklyConversionRate,
         monthlyConversionRate,
         activity
@@ -727,14 +760,20 @@
         <div class="stats-wrap">
           <div class="stats-strip" aria-label="נתוני עסק">
             <div class="stat-item${changed("totalCustomers")}"><div class="stat-value">${s.totalCustomers}</div><div class="stat-label">לקוחות</div></div>
-            <div class="stat-item${changed("returningCustomers")}"><div class="stat-value">${s.returningCustomers}</div><div class="stat-label">חוזרים</div></div>
             <div class="stat-item${changed("today")}"><div class="stat-value">${s.today}</div><div class="stat-label">תורים היום</div></div>
-            <div class="stat-item${changed("week")}"><div class="stat-value">${s.week}</div><div class="stat-label">השבוע</div></div>
+            <div class="stat-item${changed("week")}"><div class="stat-value">${s.week}</div><div class="stat-label">תורים השבוע</div></div>
+            <div class="stat-item${changed("returningCustomers")}"><div class="stat-value">${s.returningCustomers}</div><div class="stat-label">חדשים</div></div>
           </div>
           <div class="stats-strip" aria-label="כניסות לאפליקציה">
+            <div class="stat-item${changed("monthVisits")}"><div class="stat-value">${v.monthVisits}</div><div class="stat-label">כניסות סה״כ</div></div>
             <div class="stat-item${changed("todayVisits")}"><div class="stat-value">${v.todayVisits}</div><div class="stat-label">כניסות היום</div></div>
             <div class="stat-item${changed("weekVisits")}"><div class="stat-value">${v.weekVisits}</div><div class="stat-label">כניסות השבוע</div></div>
             <div class="stat-item${changed("weeklyConversionRate")}"><div class="stat-value">${weeklyConversionRate}%</div><div class="stat-label">יחס שבועי</div></div>
+          </div>
+          <div class="stats-strip" aria-label="נתוני וואטסאפ">
+            <div class="stat-item${changed("totalWhatsapp")}"><div class="stat-value">${v.totalWhatsapp}</div><div class="stat-label">ווצאפ סה״כ</div></div>
+            <div class="stat-item${changed("todayWhatsapp")}"><div class="stat-value">${v.todayWhatsapp}</div><div class="stat-label">ווצאפ היום</div></div>
+            <div class="stat-item${changed("weekWhatsapp")}"><div class="stat-value">${v.weekWhatsapp}</div><div class="stat-label">ווצאפ השבוע</div></div>
             <div class="stat-item${changed("monthlyConversionRate")}"><div class="stat-value">${monthlyConversionRate}%</div><div class="stat-label">יחס חודשי</div></div>
           </div>
           <div class="activity-line${activityChanged}">פעילות אחרונה: <strong>${activity}</strong></div>
