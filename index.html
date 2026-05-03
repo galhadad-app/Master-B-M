@@ -108,9 +108,144 @@
     .activity-line.activity-changed strong{animation:softActivityGlow .9s ease both}
     @keyframes softActivityGlow{0%{text-shadow:0 0 0 rgba(43,212,255,0)}40%{text-shadow:0 0 12px rgba(43,212,255,.35)}100%{text-shadow:0 0 0 rgba(43,212,255,0)}}
 
-    .reports-list{display:grid;gap:10px;margin-top:10px}
-    .report-row{width:100%;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(180deg,rgba(23,34,55,.78),rgba(12,18,30,.86));padding:13px 14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-    .report-title{font-weight:900;color:#fff;font-size:15px}.report-sub{font-size:12px;color:var(--muted);margin-top:4px}.reports-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}.pdf-source{position:fixed;right:-99999px;top:0;width:794px;background:#07111b;color:#e9faff;font-family:Arial,"Heebo",sans-serif;direction:rtl;padding:34px}.pdf-card{background:linear-gradient(180deg,#101d2a,#08131e);border:1px solid rgba(43,212,255,.16);border-radius:28px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.35)}.pdf-head{text-align:center;border-bottom:1px solid rgba(255,255,255,.10);padding-bottom:20px;margin-bottom:22px}.pdf-head h1{margin:0 0 8px;color:#2bd4ff;font-size:34px}.pdf-head p{margin:0;color:#9fdcff;font-size:17px}.pdf-business{font-size:22px;font-weight:900;color:#fff;text-align:center;margin-bottom:24px}.pdf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.pdf-metric{border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:18px;text-align:center;background:rgba(255,255,255,.035)}.pdf-metric strong{display:block;font-size:30px;color:#fff;margin-bottom:7px}.pdf-metric span{font-size:14px;color:#7fa6b8}.pdf-footer{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);text-align:center;color:#7fa6b8;font-size:12px}.pdf-note{margin-top:18px;border-radius:18px;background:rgba(43,212,255,.06);border:1px solid rgba(43,212,255,.12);padding:14px;text-align:center;color:#ccefff;font-size:14px;line-height:1.7}
+    .reports-list{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:7px;
+      margin-top:12px;
+    }
+    .report-tile{
+      min-height:78px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:linear-gradient(180deg,rgba(23,34,55,.66),rgba(10,16,28,.84));
+      padding:7px 5px 8px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      box-shadow:0 8px 18px rgba(0,0,0,.13);
+    }
+    .report-month{
+      width:100%;
+      text-align:center;
+      font-size:10px;
+      font-weight:900;
+      color:#fff;
+      line-height:1.25;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .report-download{
+      width:34px;
+      height:39px;
+      border:none;
+      cursor:pointer;
+      background:transparent;
+      padding:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      -webkit-tap-highlight-color:transparent;
+      transition:.18s transform,.18s opacity;
+    }
+    .report-download:hover{transform:translateY(-2px);opacity:.92}
+    .pdf-icon{
+      width:32px;
+      height:37px;
+      border-radius:7px;
+      background:#f7f7f2;
+      border:1px solid rgba(255,255,255,.55);
+      position:relative;
+      box-shadow:0 8px 16px rgba(0,0,0,.16);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .pdf-icon:before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:11px;
+      height:11px;
+      background:linear-gradient(135deg,#d9d9d2 0%,#d9d9d2 50%,transparent 51%);
+      border-bottom-right-radius:3px;
+    }
+    .pdf-icon span{
+      width:100%;
+      padding:4px 0 5px;
+      background:#c83a32;
+      color:#fff;
+      font-size:8.5px;
+      font-weight:900;
+      letter-spacing:.6px;
+      direction:ltr;
+      text-align:center;
+    }
+
+    @media(max-width:420px){
+      .reports-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+      .report-tile{min-height:72px;border-radius:13px;padding:6px 4px}
+      .report-month{font-size:9px}
+      .report-download{width:31px;height:36px}
+      .pdf-icon{width:29px;height:34px;border-radius:6px}
+    }
+    .report-mini-data{display:none;}
+    .reports-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
+
+    /* PDF: compact official report style */
+    .pdf-source{
+      position:absolute;top:0;left:0;width:794px;min-height:1123px;
+      background:#f7f7f5;color:#20242a;font-family:Arial,"Heebo",sans-serif;
+      direction:rtl;padding:64px;z-index:999999;overflow:hidden;box-shadow:none;
+    }
+    .pdf-card{
+      min-height:995px;background:#fff;border:1px solid #e2e2dc;border-radius:4px;
+      padding:58px 66px 44px;box-shadow:none;position:relative;
+    }
+    .pdf-header{
+      padding-bottom:18px;margin-bottom:34px;border-bottom:2px solid #1f2933;
+      display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    }
+    .pdf-title h1{margin:0;color:#111827;font-size:31px;font-weight:900;line-height:1.2;letter-spacing:-.3px}
+    .pdf-title p{margin:8px 0 0;color:#6b7280;font-size:13px;line-height:1.5}
+    .pdf-date{color:#8a8f96;font-size:11px;line-height:1.7;text-align:left;white-space:nowrap}
+    .pdf-content{border:1px solid #e8e8e2;border-radius:6px;overflow:hidden;background:#fff;margin-top:6px}
+    .pdf-line{
+      display:grid;grid-template-columns:118px 1fr;align-items:stretch;min-height:86px;
+      border-bottom:1px solid #eeeeea;
+    }
+    .pdf-line:last-child{border-bottom:none}
+    .pdf-line-title{
+      padding:20px 18px;background:#fbfbfa;border-left:1px solid #eeeeea;
+      color:#151b23;font-size:16px;font-weight:900;display:flex;align-items:center;
+      direction:rtl;text-align:right;unicode-bidi:plaintext;word-spacing:2px;letter-spacing:.1px;
+    }
+    .pdf-metrics{display:grid;grid-template-columns:repeat(2,1fr)}
+    .pdf-metrics.one{grid-template-columns:1fr}
+    .pdf-metric{
+      padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+      border-left:1px solid #f0f0ec;
+      direction:rtl;text-align:right;
+    }
+    .pdf-metric:last-child{border-left:none}
+    .pdf-label{
+      color:#66707c;font-size:13px;line-height:1.65;direction:rtl;text-align:right;
+      unicode-bidi:plaintext;letter-spacing:.15px;word-spacing:4px;white-space:normal;
+      display:inline-block;max-width:260px;
+    }
+    .pdf-value{color:#111827;font-size:31px;font-weight:900;line-height:1;direction:ltr;text-align:left;white-space:nowrap;min-width:58px}
+    .pdf-value.percent{font-size:36px}
+    .pdf-note{margin-top:18px;color:#7a828c;font-size:11.5px;line-height:1.75;text-align:center}
+    .pdf-footer{
+      position:absolute;right:66px;left:66px;bottom:40px;border-top:1px solid #eeeeea;
+      padding-top:12px;display:flex;justify-content:space-between;gap:20px;color:#9aa0a8;font-size:10.5px;
+    }
+    .pdf-footer .ltr{direction:ltr;text-align:left}
     @media(max-width:720px){.report-row{grid-template-columns:1fr}.report-row .mini-btn{width:100%}}
 
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
@@ -457,17 +592,18 @@
       if(!b){showToast("העסק לא נמצא",true);return;}
       const months=getAvailableReportMonths(id);
       el.reportsList.innerHTML=months.map(monthKey=>{
-        const r=getBusinessMonthlyReport(id,monthKey);
         const label=monthLabelFromKey(monthKey);
-        return `<div class="report-row">
-          <div><div class="report-title">${html(label)}</div><div class="report-sub">${r.monthVisits} כניסות · ${r.monthAppointments} תורים · ${r.conversion}% המרה</div></div>
-          <button class="mini-btn" onclick="downloadMonthlyPdf('${js(id)}','${js(monthKey)}')">הורד PDF</button>
+        return `<div class="report-tile" title="${html(label)}">
+          <div class="report-month">${html(label)}</div>
+          <button class="report-download" onclick="downloadMonthlyPdf('${js(id)}','${js(monthKey)}')" aria-label="הורד דוח PDF עבור ${html(label)}">
+            <span class="pdf-icon"><span>PDF</span></span>
+          </button>
         </div>`;
       }).join("") || '<div class="empty">אין עדיין נתונים לדוחות.</div>';
       showScreen("reports");
     }
 
-    function downloadMonthlyPdf(id, monthKey){
+    async function downloadMonthlyPdf(id, monthKey){
       if(!window.html2pdf){showToast("ספריית PDF עדיין נטענת. נסה שוב בעוד רגע",true);return;}
       const b=businesses.find(x=>x.id===id) || {};
       const name=b.businessName || b.name || id;
@@ -478,37 +614,82 @@
       wrap.className="pdf-source";
       wrap.innerHTML=`
         <div class="pdf-card">
-          <div class="pdf-head">
-            <h1>דוח חודשי</h1>
-            <p>${html(label)}</p>
+          <div class="pdf-header">
+            <div class="pdf-title">
+              <h1>${html(name)} · ${html(label)}</h1>
+              <p>דו״ח פעילות חודשי</p>
+            </div>
+            <div class="pdf-date">תאריך הפקה<br><strong>${formatHebDate(new Date())}</strong></div>
           </div>
-          <div class="pdf-business">${html(name)}</div>
-          <div class="pdf-grid">
-            <div class="pdf-metric"><strong>${r.monthVisits}</strong><span>כניסות החודש</span></div>
-            <div class="pdf-metric"><strong>${r.monthAppointments}</strong><span>תורים החודש</span></div>
-            <div class="pdf-metric"><strong>${r.conversion}%</strong><span>יחס המרה חודשי</span></div>
-            <div class="pdf-metric"><strong>${r.totalCustomers}</strong><span>לקוחות החודש</span></div>
-            <div class="pdf-metric"><strong>${r.returningCustomers}</strong><span>לקוחות חוזרים</span></div>
-            <div class="pdf-metric"><strong>${formatHebDate(new Date())}</strong><span>תאריך הפקה</span></div>
+
+          <div class="pdf-content">
+            <div class="pdf-line">
+              <div class="pdf-line-title">לקוחות</div>
+              <div class="pdf-metrics">
+                <div class="pdf-metric"><span class="pdf-label">סה״כ לקוחות</span><span class="pdf-value">${r.totalCustomers}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">לקוחות חוזרים</span><span class="pdf-value">${r.returningCustomers}</span></div>
+              </div>
+            </div>
+
+            <div class="pdf-line">
+              <div class="pdf-line-title">תורים</div>
+              <div class="pdf-metrics one">
+                <div class="pdf-metric"><span class="pdf-label">תורים שנקבעו החודש</span><span class="pdf-value">${r.monthAppointments}</span></div>
+              </div>
+            </div>
+
+            <div class="pdf-line">
+              <div class="pdf-line-title">כניסות</div>
+              <div class="pdf-metrics one">
+                <div class="pdf-metric"><span class="pdf-label">כניסות לאפליקציה</span><span class="pdf-value">${r.monthVisits}</span></div>
+              </div>
+            </div>
+
+            <div class="pdf-line">
+              <div class="pdf-line-title">המרה</div>
+              <div class="pdf-metrics one">
+                <div class="pdf-metric"><span class="pdf-label">יחס המרה מתורים לכניסות</span><span class="pdf-value percent">${r.conversion}%</span></div>
+              </div>
+            </div>
           </div>
-          <div class="pdf-note">הדוח מבוסס על כניסות שנמדדו פעם אחת ביום לכל מכשיר, ועל התורים שנשמרו במערכת.</div>
-          <div class="pdf-footer">${html(id)} · הופק מתוך מערכת ניהול העסקים</div>
+
+          <div class="pdf-note">הדוח מבוסס על הנתונים שנשמרו במערכת בזמן הפקת הקובץ.</div>
+
+          <div class="pdf-footer">
+            <div>מערכת ניהול עסקים</div>
+            <div class="ltr">${html(id)}</div>
+          </div>
         </div>`;
       document.body.appendChild(wrap);
-      html2pdf().set({
-        margin:0,
-        filename:fileName,
-        image:{type:"jpeg",quality:0.98},
-        html2canvas:{scale:2,useCORS:true,backgroundColor:"#07111b"},
-        jsPDF:{unit:"px",format:[794,1123],orientation:"portrait"}
-      }).from(wrap).save().then(()=>{
-        wrap.remove();
+      try{
+        await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+        await html2pdf().set({
+          margin:0,
+          filename:fileName,
+          image:{type:"jpeg",quality:0.98},
+          html2canvas:{
+            scale:2,
+            useCORS:true,
+            backgroundColor:"#f7f7f5",
+            width:794,
+            height:1123,
+            windowWidth:794,
+            windowHeight:1123,
+            scrollX:0,
+            scrollY:0,
+            x:0,
+            y:0
+          },
+          jsPDF:{unit:"px",format:[794,1123],orientation:"portrait"},
+          pagebreak:{mode:["avoid-all"]}
+        }).from(wrap).save();
         showToast("הדוח ירד בהצלחה");
-      }).catch(err=>{
+      }catch(err){
         console.error(err);
-        wrap.remove();
         showToast("יצירת PDF נכשלה",true);
-      });
+      }finally{
+        wrap.remove();
+      }
     }
 
     function renderStatsHtml(id){
