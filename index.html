@@ -83,7 +83,7 @@
     .row-arrow{color:var(--primary);font-weight:900;font-size:20px}.empty{text-align:center;padding:30px 12px;color:var(--muted);line-height:1.8;border:1px dashed rgba(255,255,255,.10);border-radius:22px;background:rgba(255,255,255,.02)}
     .detail-card{border-radius:24px;border:1px solid rgba(255,255,255,.09);background:rgba(5,12,22,.34);padding:16px;margin-top:12px}
     .business-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}.meta{color:var(--muted);font-size:13px;line-height:1.75}.badge{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;background:rgba(140,240,181,.12);color:#bcf8d1;border:1px solid rgba(140,240,181,.22);white-space:nowrap}.badge.pro{background:rgba(114,201,255,.11);color:#b9e9ff;border-color:rgba(114,201,255,.24)}.badge.premium{background:rgba(230,193,115,.12);color:#ffe8b2;border-color:rgba(230,193,115,.25)}.badge.frozen{background:rgba(255,123,123,.12);color:#ffc8c8;border-color:rgba(255,123,123,.28);margin-inline-start:6px}
-    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:1fr 1fr 1fr 90px;gap:8px;margin-top:14px}
+    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
     .stats-wrap{margin:10px 0 2px;display:grid;gap:7px}
     .stats-strip{
       display:grid;grid-template-columns:repeat(4,1fr);align-items:center;
@@ -107,6 +107,12 @@
     .activity-line strong{color:#dff8ff;font-size:12px;font-weight:800}
     .activity-line.activity-changed strong{animation:softActivityGlow .9s ease both}
     @keyframes softActivityGlow{0%{text-shadow:0 0 0 rgba(43,212,255,0)}40%{text-shadow:0 0 12px rgba(43,212,255,.35)}100%{text-shadow:0 0 0 rgba(43,212,255,0)}}
+
+    .reports-list{display:grid;gap:10px;margin-top:10px}
+    .report-row{width:100%;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(180deg,rgba(23,34,55,.78),rgba(12,18,30,.86));padding:13px 14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .report-title{font-weight:900;color:#fff;font-size:15px}.report-sub{font-size:12px;color:var(--muted);margin-top:4px}.reports-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}.pdf-source{position:fixed;right:-99999px;top:0;width:794px;background:#07111b;color:#e9faff;font-family:Arial,"Heebo",sans-serif;direction:rtl;padding:34px}.pdf-card{background:linear-gradient(180deg,#101d2a,#08131e);border:1px solid rgba(43,212,255,.16);border-radius:28px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.35)}.pdf-head{text-align:center;border-bottom:1px solid rgba(255,255,255,.10);padding-bottom:20px;margin-bottom:22px}.pdf-head h1{margin:0 0 8px;color:#2bd4ff;font-size:34px}.pdf-head p{margin:0;color:#9fdcff;font-size:17px}.pdf-business{font-size:22px;font-weight:900;color:#fff;text-align:center;margin-bottom:24px}.pdf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.pdf-metric{border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:18px;text-align:center;background:rgba(255,255,255,.035)}.pdf-metric strong{display:block;font-size:30px;color:#fff;margin-bottom:7px}.pdf-metric span{font-size:14px;color:#7fa6b8}.pdf-footer{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);text-align:center;color:#7fa6b8;font-size:12px}.pdf-note{margin-top:18px;border-radius:18px;background:rgba(43,212,255,.06);border:1px solid rgba(43,212,255,.12);padding:14px;text-align:center;color:#ccefff;font-size:14px;line-height:1.7}
+    @media(max-width:720px){.report-row{grid-template-columns:1fr}.report-row .mini-btn{width:100%}}
+
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
     @media(max-width:720px){.page{padding-top:12px}.top-title h1{font-size:26px}.row,.form-actions,.actions,.link-row{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(4,1fr)}.mini-btn{width:100%}.business-top{flex-direction:column}.topbar{display:grid}}
   </style>
@@ -163,10 +169,22 @@
         <div id="businessDetails"></div>
       </section>
     </section>
+
+
+    <section id="reportsScreen" class="screen">
+      <section class="card">
+        <div class="section-head">
+          <div><h2>דוחות חודשיים</h2><div class="small-note">בחר חודש והורד דוח PDF מסודר לעסק.</div></div>
+          <button class="btn ghost small" id="backFromReportsBtn">חזרה</button>
+        </div>
+        <div id="reportsList" class="reports-list"></div>
+      </section>
+    </section>
   </main>
 
   <div id="toast" class="toast"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -217,10 +235,12 @@
       homeScreen:document.getElementById("homeScreen"),
       formScreen:document.getElementById("formScreen"),
       detailScreen:document.getElementById("detailScreen"),
+      reportsScreen:document.getElementById("reportsScreen"),
       openAddBtn:document.getElementById("openAddBtn"),
       backFromFormBtn:document.getElementById("backFromFormBtn"),
       backFromDetailsBtn:document.getElementById("backFromDetailsBtn"),
       businessDetails:document.getElementById("businessDetails"),
+      reportsList:document.getElementById("reportsList"),
       businessName:document.getElementById("businessName"),
       businessId:document.getElementById("businessId"),
       whatsappNumber:document.getElementById("whatsappNumber"),
@@ -236,9 +256,10 @@
     };
 
     function showScreen(name){
-      [el.homeScreen,el.formScreen,el.detailScreen].forEach(s=>s.classList.remove("active"));
+      [el.homeScreen,el.formScreen,el.detailScreen,el.reportsScreen].forEach(s=>s.classList.remove("active"));
       if(name === "form") el.formScreen.classList.add("active");
       else if(name === "details") el.detailScreen.classList.add("active");
+      else if(name === "reports") el.reportsScreen.classList.add("active");
       else el.homeScreen.classList.add("active");
       window.scrollTo({top:0,behavior:"smooth"});
     }
@@ -370,6 +391,124 @@
         if(d>=startOfMonth && d<endOfMonth) monthVisits += n;
       });
       return {todayVisits,weekVisits,monthVisits};
+    }
+
+    function monthKeyFromDate(d){
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    }
+
+    function monthLabelFromKey(monthKey){
+      const [y,m]=String(monthKey).split("-").map(Number);
+      const d=new Date(y,(m||1)-1,1);
+      return d.toLocaleDateString("he-IL",{month:"long",year:"numeric"});
+    }
+
+    function getMonthRange(monthKey){
+      const [y,m]=String(monthKey).split("-").map(Number);
+      const start=new Date(y,(m||1)-1,1);
+      const end=new Date(y,(m||1),1);
+      return {start,end};
+    }
+
+    function getBusinessMonthlyReport(id, monthKey){
+      const b=businesses.find(x=>x.id===id) || {};
+      const {start,end}=getMonthRange(monthKey);
+      const visits=b.visits && typeof b.visits === "object" ? b.visits : {};
+      let monthVisits=0;
+      Object.entries(visits).forEach(([dateKey,count])=>{
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+        const d=new Date(dateKey+"T12:00:00");
+        if(d>=start && d<end) monthVisits += Number(count || 0);
+      });
+
+      const relevant=appointments.filter(a=>appointmentBusinessId(a) === id);
+      let monthAppointments=0;
+      const customerCounts={};
+      relevant.forEach(a=>{
+        const d=appointmentDate(a);
+        if(!d || isNaN(d.getTime()) || d<start || d>=end) return;
+        monthAppointments++;
+        const phone=appointmentPhone(a);
+        if(phone) customerCounts[phone]=(customerCounts[phone]||0)+1;
+      });
+      const totalCustomers=Object.keys(customerCounts).length;
+      const returningCustomers=Object.values(customerCounts).filter(n=>n>1).length;
+      const conversion=monthVisits > 0 ? Math.round((monthAppointments / monthVisits) * 100) : 0;
+      return {monthVisits,monthAppointments,totalCustomers,returningCustomers,conversion};
+    }
+
+    function getAvailableReportMonths(id){
+      const b=businesses.find(x=>x.id===id) || {};
+      const set=new Set();
+      const visits=b.visits && typeof b.visits === "object" ? b.visits : {};
+      Object.keys(visits).forEach(k=>{ if(/^\d{4}-\d{2}-\d{2}$/.test(k)) set.add(k.slice(0,7)); });
+      appointments.filter(a=>appointmentBusinessId(a) === id).forEach(a=>{
+        const d=appointmentDate(a);
+        if(d && !isNaN(d.getTime())) set.add(monthKeyFromDate(d));
+      });
+      const now=new Date();
+      for(let i=0;i<6;i++) set.add(monthKeyFromDate(new Date(now.getFullYear(), now.getMonth()-i, 1)));
+      return Array.from(set).sort().reverse().slice(0,12);
+    }
+
+    function openReports(id){
+      selectedId=id;
+      const b=businesses.find(x=>x.id===id);
+      if(!b){showToast("העסק לא נמצא",true);return;}
+      const months=getAvailableReportMonths(id);
+      el.reportsList.innerHTML=months.map(monthKey=>{
+        const r=getBusinessMonthlyReport(id,monthKey);
+        const label=monthLabelFromKey(monthKey);
+        return `<div class="report-row">
+          <div><div class="report-title">${html(label)}</div><div class="report-sub">${r.monthVisits} כניסות · ${r.monthAppointments} תורים · ${r.conversion}% המרה</div></div>
+          <button class="mini-btn" onclick="downloadMonthlyPdf('${js(id)}','${js(monthKey)}')">הורד PDF</button>
+        </div>`;
+      }).join("") || '<div class="empty">אין עדיין נתונים לדוחות.</div>';
+      showScreen("reports");
+    }
+
+    function downloadMonthlyPdf(id, monthKey){
+      if(!window.html2pdf){showToast("ספריית PDF עדיין נטענת. נסה שוב בעוד רגע",true);return;}
+      const b=businesses.find(x=>x.id===id) || {};
+      const name=b.businessName || b.name || id;
+      const label=monthLabelFromKey(monthKey);
+      const r=getBusinessMonthlyReport(id,monthKey);
+      const fileName=`דוח-${id}-${monthKey}.pdf`;
+      const wrap=document.createElement("div");
+      wrap.className="pdf-source";
+      wrap.innerHTML=`
+        <div class="pdf-card">
+          <div class="pdf-head">
+            <h1>דוח חודשי</h1>
+            <p>${html(label)}</p>
+          </div>
+          <div class="pdf-business">${html(name)}</div>
+          <div class="pdf-grid">
+            <div class="pdf-metric"><strong>${r.monthVisits}</strong><span>כניסות החודש</span></div>
+            <div class="pdf-metric"><strong>${r.monthAppointments}</strong><span>תורים החודש</span></div>
+            <div class="pdf-metric"><strong>${r.conversion}%</strong><span>יחס המרה חודשי</span></div>
+            <div class="pdf-metric"><strong>${r.totalCustomers}</strong><span>לקוחות החודש</span></div>
+            <div class="pdf-metric"><strong>${r.returningCustomers}</strong><span>לקוחות חוזרים</span></div>
+            <div class="pdf-metric"><strong>${formatHebDate(new Date())}</strong><span>תאריך הפקה</span></div>
+          </div>
+          <div class="pdf-note">הדוח מבוסס על כניסות שנמדדו פעם אחת ביום לכל מכשיר, ועל התורים שנשמרו במערכת.</div>
+          <div class="pdf-footer">${html(id)} · הופק מתוך מערכת ניהול העסקים</div>
+        </div>`;
+      document.body.appendChild(wrap);
+      html2pdf().set({
+        margin:0,
+        filename:fileName,
+        image:{type:"jpeg",quality:0.98},
+        html2canvas:{scale:2,useCORS:true,backgroundColor:"#07111b"},
+        jsPDF:{unit:"px",format:[794,1123],orientation:"portrait"}
+      }).from(wrap).save().then(()=>{
+        wrap.remove();
+        showToast("הדוח ירד בהצלחה");
+      }).catch(err=>{
+        console.error(err);
+        wrap.remove();
+        showToast("יצירת PDF נכשלה",true);
+      });
     }
 
     function renderStatsHtml(id){
@@ -591,6 +730,7 @@
           <div class="actions">
             <button class="btn ghost small" onclick="fillForm('${js(id)}')">ערוך</button>
             <button class="btn ghost small" onclick="window.open('${js(app)}','_blank')">פתח אפליקציה</button>
+            <button class="btn ghost small" onclick="openReports('${js(id)}')">דוחות</button>
             <button class="btn ${isBusinessFrozen(b) ? "unfreeze" : "freeze"} small" onclick="toggleBusinessFreeze('${js(id)}')">${isBusinessFrozen(b) ? "הפעל עסק" : "הקפא עסק"}</button>
             <button class="btn danger small" onclick="deleteBusiness('${js(id)}')">מחק</button>
           </div>
@@ -645,6 +785,7 @@
     el.openAddBtn.addEventListener("click",()=>{resetForm();showScreen("form")});
     el.backFromFormBtn.addEventListener("click",()=>showScreen("home"));
     el.backFromDetailsBtn.addEventListener("click",()=>showScreen("home"));
+    document.getElementById("backFromReportsBtn").addEventListener("click",()=>showScreen("details"));
     el.businessId.addEventListener("input",()=>el.businessId.value=cleanId(el.businessId.value));
     el.whatsappNumber.addEventListener("input",()=>el.whatsappNumber.value=cleanPhone(el.whatsappNumber.value));
     el.ownerCode.addEventListener("input",()=>el.ownerCode.value=digits(el.ownerCode.value).slice(0,4));
