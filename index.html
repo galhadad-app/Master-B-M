@@ -65,6 +65,8 @@
     .btn.primary{width:100%;color:#00222c;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 14px 32px rgba(43,212,255,.18)}
     .btn.ghost{color:var(--text);background:#111b2c;border:1px solid rgba(255,255,255,.10)}
     .btn.danger{color:#ffc8c8;background:rgba(255,123,123,.08);border:1px solid rgba(255,123,123,.26)}
+    .btn.freeze{color:#ffe8b2;background:rgba(230,193,115,.10);border:1px solid rgba(230,193,115,.28)}
+    .btn.unfreeze{color:#bcf8d1;background:rgba(29,233,182,.10);border:1px solid rgba(29,233,182,.28)}
     .btn.small{padding:11px 12px;border-radius:15px;font-size:12px}
     .form-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.status{min-height:22px;margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}
     .add-business-box{padding:0}.add-business-box .btn{min-height:58px;font-size:16px}
@@ -80,9 +82,33 @@
     .row-title{font-weight:900;font-size:16px;color:#fff}.row-sub{font-size:12px;color:var(--muted);margin-top:5px;direction:ltr;text-align:right}
     .row-arrow{color:var(--primary);font-weight:900;font-size:20px}.empty{text-align:center;padding:30px 12px;color:var(--muted);line-height:1.8;border:1px dashed rgba(255,255,255,.10);border-radius:22px;background:rgba(255,255,255,.02)}
     .detail-card{border-radius:24px;border:1px solid rgba(255,255,255,.09);background:rgba(5,12,22,.34);padding:16px;margin-top:12px}
-    .business-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}.meta{color:var(--muted);font-size:13px;line-height:1.75}.badge{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;background:rgba(140,240,181,.12);color:#bcf8d1;border:1px solid rgba(140,240,181,.22);white-space:nowrap}.badge.pro{background:rgba(114,201,255,.11);color:#b9e9ff;border-color:rgba(114,201,255,.24)}.badge.premium{background:rgba(230,193,115,.12);color:#ffe8b2;border-color:rgba(230,193,115,.25)}
-    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:1fr 1fr 90px;gap:8px;margin-top:14px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
-    @media(max-width:720px){.page{padding-top:12px}.top-title h1{font-size:26px}.row,.form-actions,.actions,.link-row{grid-template-columns:1fr}.mini-btn{width:100%}.business-top{flex-direction:column}.topbar{display:grid}}
+    .business-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}.meta{color:var(--muted);font-size:13px;line-height:1.75}.badge{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;background:rgba(140,240,181,.12);color:#bcf8d1;border:1px solid rgba(140,240,181,.22);white-space:nowrap}.badge.pro{background:rgba(114,201,255,.11);color:#b9e9ff;border-color:rgba(114,201,255,.24)}.badge.premium{background:rgba(230,193,115,.12);color:#ffe8b2;border-color:rgba(230,193,115,.25)}.badge.frozen{background:rgba(255,123,123,.12);color:#ffc8c8;border-color:rgba(255,123,123,.28);margin-inline-start:6px}
+    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:1fr 1fr 1fr 90px;gap:8px;margin-top:14px}
+    .stats-wrap{margin:10px 0 2px;display:grid;gap:7px}
+    .stats-strip{
+      display:grid;grid-template-columns:repeat(4,1fr);align-items:center;
+      border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;
+      background:linear-gradient(90deg,rgba(9,16,29,.32),rgba(11,31,42,.24),rgba(9,16,29,.32));
+    }
+    .stat-item{
+      min-height:42px;padding:7px 6px;text-align:center;position:relative;
+      display:flex;flex-direction:column;justify-content:center;gap:2px;transition:.22s ease;
+    }
+    .stat-item:not(:last-child)::after{
+      content:"";position:absolute;left:0;top:10px;bottom:10px;width:1px;background:rgba(255,255,255,.07);
+    }
+    .stat-label{font-size:9.5px;color:var(--muted);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .stat-value{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1}
+    .stat-item.stat-changed{animation:softStatPulse .75s ease both}
+    .stat-item.stat-changed .stat-value{animation:softNumberPop .45s ease both;color:#e9fcff}
+    @keyframes softStatPulse{0%{background:rgba(43,212,255,0);transform:translateY(0)}35%{background:rgba(43,212,255,.08);transform:translateY(-1px)}100%{background:rgba(43,212,255,0);transform:translateY(0)}}
+    @keyframes softNumberPop{0%{transform:scale(.96);opacity:.72}55%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
+    .activity-line{padding:0 3px;color:var(--muted);font-size:11px;line-height:1.55}
+    .activity-line strong{color:#dff8ff;font-size:12px;font-weight:800}
+    .activity-line.activity-changed strong{animation:softActivityGlow .9s ease both}
+    @keyframes softActivityGlow{0%{text-shadow:0 0 0 rgba(43,212,255,0)}40%{text-shadow:0 0 12px rgba(43,212,255,.35)}100%{text-shadow:0 0 0 rgba(43,212,255,0)}}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
+    @media(max-width:720px){.page{padding-top:12px}.top-title h1{font-size:26px}.row,.form-actions,.actions,.link-row{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(4,1fr)}.mini-btn{width:100%}.business-top{flex-direction:column}.topbar{display:grid}}
   </style>
 </head>
 <body>
@@ -158,6 +184,7 @@
     const db = firebase.firestore();
 
     const COLLECTION = "businessSettings";
+    const APPOINTMENTS_COLLECTION = "appointments";
     const APP_BASE_URL = "https://galhadad-app.github.io/Master-B/index.html";
 
     const DEFAULT_WORKING_HOURS = {
@@ -181,7 +208,10 @@
     let businesses = [];
     let editingId = "";
     let selectedId = "";
+    let appointments = [];
+    const previousStats = {};
     let unsubscribe = null;
+    let unsubscribeAppointments = null;
 
     const el = {
       homeScreen:document.getElementById("homeScreen"),
@@ -230,6 +260,124 @@
     function js(v){return String(v||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}
     function appLink(id){return APP_BASE_URL+"?business="+encodeURIComponent(id)}
     function waLink(id,phone){return "https://wa.me/"+phone+"?text="+encodeURIComponent("start_"+id)}
+    function isBusinessFrozen(b){return b && (b.isFrozen === true || b.appFrozen === true || b.active === false || b.status === "frozen")}
+    function frozenLabel(b){return isBusinessFrozen(b) ? "מוקפא" : "פעיל"}
+
+    function toLocalDateString(d){
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,"0");
+      const day=String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function normalizeDateValue(v){
+      if(!v) return null;
+      if(v.toDate && typeof v.toDate === "function") return v.toDate();
+      if(typeof v === "number") return new Date(v);
+      if(typeof v === "string"){
+        const raw=v.trim();
+        if(!raw) return null;
+        if(/^\d{4}-\d{2}-\d{2}$/.test(raw)) return new Date(raw+"T12:00:00");
+        const d=new Date(raw);
+        return isNaN(d.getTime()) ? null : d;
+      }
+      return null;
+    }
+
+    function appointmentBusinessId(a){
+      return String(a.businessId || a.businessID || a.business || a.bizId || a.business_id || "").trim();
+    }
+
+    function appointmentDate(a){
+      return normalizeDateValue(a.date || a.appointmentDate || a.day || a.slotDate || a.dateKey || a.startAt || a.time || a.createdAt || a.createdAtMs);
+    }
+
+    function appointmentActivityDate(a){
+      return normalizeDateValue(a.updatedAt || a.updatedAtMs || a.createdAt || a.createdAtMs || a.date || a.appointmentDate || a.day || a.startAt);
+    }
+
+    function appointmentPhone(a){
+      return cleanPhone(a.phone || a.customerPhone || a.whatsappNumber || a.customerWhatsapp || a.clientPhone || "");
+    }
+
+    function appointmentName(a){
+      return String(a.name || a.customerName || a.fullName || a.clientName || "").trim();
+    }
+
+    function appointmentTime(a){
+      return String(a.hour || a.timeSlot || a.slot || a.time || a.appointmentTime || "").trim();
+    }
+
+    function formatHebDate(d){
+      if(!d) return "-";
+      try{return d.toLocaleDateString("he-IL",{day:"2-digit",month:"2-digit",year:"numeric"})}
+      catch(e){return toLocalDateString(d)}
+    }
+
+    function computeStats(id){
+      const now=new Date();
+      const todayKey=toLocalDateString(now);
+      const startOfWeek=new Date(now); startOfWeek.setHours(0,0,0,0); startOfWeek.setDate(now.getDate()-now.getDay());
+      const endOfWeek=new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate()+7);
+      const relevant=appointments.filter(a=>appointmentBusinessId(a) === id);
+      const customerCounts={};
+      relevant.forEach(a=>{
+        const phone=appointmentPhone(a);
+        if(phone) customerCounts[phone]=(customerCounts[phone]||0)+1;
+      });
+      const totalCustomers=Object.keys(customerCounts).length;
+      const returningCustomers=Object.values(customerCounts).filter(n=>n>1).length;
+      let today=0, week=0;
+      relevant.forEach(a=>{
+        const d=appointmentDate(a);
+        if(!d || isNaN(d.getTime())) return;
+        const key=toLocalDateString(d);
+        if(key===todayKey) today++;
+        if(d>=startOfWeek && d<endOfWeek) week++;
+      });
+      let last=null;
+      relevant.forEach(a=>{
+        const d=appointmentActivityDate(a);
+        if(!d || isNaN(d.getTime())) return;
+        if(!last || d>last.date) last={date:d,a};
+      });
+      return {totalCustomers,returningCustomers,today,week,last};
+    }
+
+    function renderStatsHtml(id){
+      const s=computeStats(id);
+      let activity="אין פעילות אחרונה";
+      if(s.last){
+        const a=s.last.a;
+        const who=appointmentName(a) || appointmentPhone(a) || "לקוח";
+        const when=formatHebDate(s.last.date);
+        const time=appointmentTime(a);
+        activity=`${html(who)} · ${html(when)}${time ? " · "+html(time) : ""}`;
+      }
+
+      const current={
+        totalCustomers:s.totalCustomers,
+        returningCustomers:s.returningCustomers,
+        today:s.today,
+        week:s.week,
+        activity
+      };
+      const prev=previousStats[id] || null;
+      const changed=(key)=>prev && String(prev[key]) !== String(current[key]) ? " stat-changed" : "";
+      const activityChanged=prev && String(prev.activity) !== String(current.activity) ? " activity-changed" : "";
+      previousStats[id]=current;
+
+      return `
+        <div class="stats-wrap">
+          <div class="stats-strip" aria-label="נתוני עסק">
+            <div class="stat-item${changed("totalCustomers")}"><div class="stat-value">${s.totalCustomers}</div><div class="stat-label">לקוחות</div></div>
+            <div class="stat-item${changed("returningCustomers")}"><div class="stat-value">${s.returningCustomers}</div><div class="stat-label">חוזרים</div></div>
+            <div class="stat-item${changed("today")}"><div class="stat-value">${s.today}</div><div class="stat-label">תורים היום</div></div>
+            <div class="stat-item${changed("week")}"><div class="stat-value">${s.week}</div><div class="stat-label">השבוע</div></div>
+          </div>
+          <div class="activity-line${activityChanged}">פעילות אחרונה: <strong>${activity}</strong></div>
+        </div>`;
+    }
 
     async function copyText(text){
       try{await navigator.clipboard.writeText(text);showToast("הועתק")}
@@ -302,6 +450,13 @@
           updatedAt:firebase.firestore.FieldValue.serverTimestamp()
         };
 
+        if(!existing.exists){
+          payload.isFrozen=false;
+          payload.appFrozen=false;
+          payload.active=true;
+          payload.status="active";
+        }
+
         if(!data.workingHours) payload.workingHours=DEFAULT_WORKING_HOURS;
         if(!Array.isArray(data.services)||!data.services.length) payload.services=DEFAULT_SERVICES;
         if(!data.logoSrc) payload.logoSrc = "logo.png";
@@ -323,6 +478,32 @@
         el.saveStatus.textContent="שגיאה: "+(err.message||err);
         showToast("השמירה נכשלה. בדוק הרשאות Firestore",true);
       }finally{el.saveBtn.disabled=false}
+    }
+
+    async function toggleBusinessFreeze(id){
+      const b=businesses.find(x=>x.id===id);
+      if(!b) return;
+      const nextFrozen=!isBusinessFrozen(b);
+      const msg=nextFrozen
+        ? "להקפיא את העסק? האפליקציה לא תהיה פעילה, אבל כל הנתונים יישמרו."
+        : "להחזיר את העסק לפעילות רגילה?";
+      if(!confirm(msg)) return;
+      try{
+        await db.collection(COLLECTION).doc(id).set({
+          isFrozen:nextFrozen,
+          appFrozen:nextFrozen,
+          active:!nextFrozen,
+          status:nextFrozen ? "frozen" : "active",
+          frozenMessage:nextFrozen ? "האפליקציה לא פעילה כעת. עמכם הסליחה." : firebase.firestore.FieldValue.delete(),
+          frozenAtMs:nextFrozen ? Date.now() : firebase.firestore.FieldValue.delete(),
+          updatedAtMs:Date.now(),
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        },{merge:true});
+        showToast(nextFrozen ? "העסק הוקפא — הנתונים נשמרו" : "העסק חזר לפעילות רגילה");
+      }catch(err){
+        console.error(err);
+        showToast("עדכון סטטוס העסק נכשל",true);
+      }
     }
 
     async function deleteBusiness(id){
@@ -358,8 +539,9 @@
               <div class="business-title">${html(name)}</div>
               <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}</div>
             </div>
-            <span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>
+            <div><span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>${isBusinessFrozen(b) ? `<span class="badge frozen">מוקפא</span>` : ``}</div>
           </div>
+          ${renderStatsHtml(id)}
           <div class="link-label">קישור לאפליקציה</div>
           <div class="link-row"><div class="link-box">${html(app)}</div><button class="mini-btn" onclick="copyText('${js(app)}')">העתק</button></div>
           <div class="link-label">קישור וואטסאפ</div>
@@ -367,6 +549,7 @@
           <div class="actions">
             <button class="btn ghost small" onclick="fillForm('${js(id)}')">ערוך</button>
             <button class="btn ghost small" onclick="window.open('${js(app)}','_blank')">פתח אפליקציה</button>
+            <button class="btn ${isBusinessFrozen(b) ? "unfreeze" : "freeze"} small" onclick="toggleBusinessFreeze('${js(id)}')">${isBusinessFrozen(b) ? "הפעל עסק" : "הקפא עסק"}</button>
             <button class="btn danger small" onclick="deleteBusiness('${js(id)}')">מחק</button>
           </div>
         </div>`;
@@ -384,12 +567,24 @@
         const name=b.businessName||b.name||id;
         const phone=cleanPhone(b.whatsappNumber||b.phone||"");
         const plan=b.plan||"basic";
+        const state=frozenLabel(b);
         return `<button class="business-row" onclick="openDetails('${js(id)}')">
-          <div><div class="row-title">${html(name)}</div><div class="row-sub">${html(id)} · ${html(phone||"-")} · ${html(planLabels[plan]||plan)}</div></div>
+          <div><div class="row-title">${html(name)}</div><div class="row-sub">${html(id)} · ${html(phone||"-")} · ${html(planLabels[plan]||plan)} · ${html(state)}</div></div>
           <div class="row-arrow">‹</div>
         </button>`;
       }).join("");
       if(selectedId) renderDetails();
+    }
+
+    function subscribeAppointments(){
+      if(unsubscribeAppointments) unsubscribeAppointments();
+      unsubscribeAppointments=db.collection(APPOINTMENTS_COLLECTION).onSnapshot(snap=>{
+        appointments=snap.docs.map(d=>({id:d.id,...d.data()}));
+        if(selectedId) renderDetails();
+      },err=>{
+        console.error(err);
+        showToast("טעינת נתוני תורים נכשלה",true);
+      });
     }
 
     function subscribe(){
@@ -418,6 +613,7 @@
 
     resetForm();
     subscribe();
+    subscribeAppointments();
   </script>
 </body>
 </html>
