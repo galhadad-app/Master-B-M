@@ -229,6 +229,29 @@
     }
     .pdf-metrics{display:grid;grid-template-columns:repeat(2,1fr)}
     .pdf-metrics.one{grid-template-columns:1fr}
+        .pdf-metrics.three{grid-template-columns:repeat(3,1fr)}
+    .pdf-metrics.three .pdf-metric{
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      gap:8px;
+      padding:18px 12px;
+      min-width:0;
+    }
+    .pdf-metrics.three .pdf-label{
+      max-width:none;
+      width:100%;
+      text-align:center;
+      line-height:1.35;
+      white-space:normal;
+      word-spacing:1px;
+    }
+    .pdf-metrics.three .pdf-value{
+      min-width:0;
+      text-align:center;
+      width:100%;
+    }
     .pdf-metric{
       padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:24px;
       border-left:1px solid #f0f0ec;
@@ -580,6 +603,29 @@
       return {start,end};
     }
 
+    function getMonthlyObjectTotal(obj, start, end){
+      if(!obj || typeof obj !== "object") return 0;
+      let total=0;
+      Object.entries(obj).forEach(([dateKey,count])=>{
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+        const d=new Date(dateKey+"T12:00:00");
+        if(d>=start && d<end) total += Number(count || 0);
+      });
+      return total;
+    }
+
+    function isWhatsappAppointment(a){
+      const raw=[
+        a.source, a.channel, a.bookingSource, a.bookedFrom, a.createdFrom,
+        a.platform, a.origin, a.via, a.type, a.sourceType
+      ].join(" ").toLowerCase();
+      return a.viaWhatsapp === true ||
+        a.fromWhatsapp === true ||
+        a.whatsapp === true ||
+        a.isWhatsapp === true ||
+        /whatsapp|וואטסאפ|ווצאפ|wa\b|bot|בוט/.test(raw);
+    }
+
     function getBusinessMonthlyReport(id, monthKey){
       const b=businesses.find(x=>x.id===id) || {};
       const {start,end}=getMonthRange(monthKey);
@@ -592,19 +638,36 @@
       });
 
       const relevant=appointments.filter(a=>appointmentBusinessId(a) === id);
-      let monthAppointments=0;
+      let monthAppAppointments=0;
+      let monthWhatsappAppointments=0;
       const customerCounts={};
       relevant.forEach(a=>{
         const d=appointmentDate(a);
         if(!d || isNaN(d.getTime()) || d<start || d>=end) return;
-        monthAppointments++;
+        if(isWhatsappAppointment(a)) monthWhatsappAppointments++;
+        else monthAppAppointments++;
         const phone=appointmentPhone(a);
         if(phone) customerCounts[phone]=(customerCounts[phone]||0)+1;
       });
+
+      const whatsappBookingSources=[
+        b.whatsappAppointments,
+        b.waAppointments,
+        b.whatsappBookings,
+        b.waBookings,
+        b.botAppointments,
+        b.botBookings
+      ].filter(x=>x && typeof x === "object");
+      const storedWhatsappAppointments=whatsappBookingSources.reduce((sum,src)=>sum+getMonthlyObjectTotal(src,start,end),0);
+      if(storedWhatsappAppointments > monthWhatsappAppointments){
+        monthWhatsappAppointments = storedWhatsappAppointments;
+      }
+
+      const monthAppointments=monthAppAppointments + monthWhatsappAppointments;
       const totalCustomers=Object.keys(customerCounts).length;
       const returningCustomers=Object.values(customerCounts).filter(n=>n>1).length;
-      const conversion=monthVisits > 0 ? Math.round((monthAppointments / monthVisits) * 100) : 0;
-      return {monthVisits,monthAppointments,totalCustomers,returningCustomers,conversion};
+      const conversion=monthVisits > 0 ? Math.round((monthAppAppointments / monthVisits) * 100) : 0;
+      return {monthVisits,monthAppointments,monthAppAppointments,monthWhatsappAppointments,totalCustomers,returningCustomers,conversion};
     }
 
     function getAvailableReportMonths(id){
@@ -661,15 +724,17 @@
             <div class="pdf-line">
               <div class="pdf-line-title">לקוחות</div>
               <div class="pdf-metrics">
-                <div class="pdf-metric"><span class="pdf-label">סה״כ לקוחות</span><span class="pdf-value">${r.totalCustomers}</span></div>
-                <div class="pdf-metric"><span class="pdf-label">לקוחות חדשים</span><span class="pdf-value">${r.returningCustomers}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">סה״כ</span><span class="pdf-value">${r.totalCustomers}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">חדשים</span><span class="pdf-value">${r.returningCustomers}</span></div>
               </div>
             </div>
 
             <div class="pdf-line">
               <div class="pdf-line-title">תורים</div>
-              <div class="pdf-metrics one">
-                <div class="pdf-metric"><span class="pdf-label">תורים שנקבעו החודש</span><span class="pdf-value">${r.monthAppointments}</span></div>
+              <div class="pdf-metrics three">
+                <div class="pdf-metric"><span class="pdf-label">אפליקציה</span><span class="pdf-value">${r.monthAppAppointments}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">ווצאפ</span><span class="pdf-value">${r.monthWhatsappAppointments}</span></div>
+                <div class="pdf-metric"><span class="pdf-label">סה״כ</span><span class="pdf-value">${r.monthAppointments}</span></div>
               </div>
             </div>
 
@@ -683,7 +748,7 @@
             <div class="pdf-line">
               <div class="pdf-line-title">המרה</div>
               <div class="pdf-metrics one">
-                <div class="pdf-metric"><span class="pdf-label">יחס המרה מתורים לכניסות</span><span class="pdf-value percent">${r.conversion}%</span></div>
+                <div class="pdf-metric"><span class="pdf-label">יחס המרה אפליקציה לכניסות</span><span class="pdf-value percent">${r.conversion}%</span></div>
               </div>
             </div>
           </div>
