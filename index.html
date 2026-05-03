@@ -344,8 +344,30 @@
       return {totalCustomers,returningCustomers,today,week,last};
     }
 
+    function getBusinessVisitStats(id){
+      const b=businesses.find(x=>x.id===id) || {};
+      const visits=b.visits && typeof b.visits === "object" ? b.visits : {};
+      const now=new Date();
+      const todayKey=toLocalDateString(now);
+      const startOfWeek=new Date(now);
+      startOfWeek.setHours(0,0,0,0);
+      startOfWeek.setDate(now.getDate()-now.getDay());
+      const endOfWeek=new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate()+7);
+
+      const todayVisits=Number(visits[todayKey] || 0);
+      let weekVisits=0;
+      Object.entries(visits).forEach(([dateKey,count])=>{
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+        const d=new Date(dateKey+"T12:00:00");
+        if(d>=startOfWeek && d<endOfWeek) weekVisits += Number(count || 0);
+      });
+      return {todayVisits,weekVisits};
+    }
+
     function renderStatsHtml(id){
       const s=computeStats(id);
+      const v=getBusinessVisitStats(id);
       let activity="אין פעילות אחרונה";
       if(s.last){
         const a=s.last.a;
@@ -360,6 +382,8 @@
         returningCustomers:s.returningCustomers,
         today:s.today,
         week:s.week,
+        todayVisits:v.todayVisits,
+        weekVisits:v.weekVisits,
         activity
       };
       const prev=previousStats[id] || null;
@@ -374,6 +398,12 @@
             <div class="stat-item${changed("returningCustomers")}"><div class="stat-value">${s.returningCustomers}</div><div class="stat-label">חוזרים</div></div>
             <div class="stat-item${changed("today")}"><div class="stat-value">${s.today}</div><div class="stat-label">תורים היום</div></div>
             <div class="stat-item${changed("week")}"><div class="stat-value">${s.week}</div><div class="stat-label">השבוע</div></div>
+          </div>
+          <div class="stats-strip" aria-label="כניסות לאפליקציה">
+            <div class="stat-item${changed("todayVisits")}"><div class="stat-value">${v.todayVisits}</div><div class="stat-label">כניסות היום</div></div>
+            <div class="stat-item${changed("weekVisits")}"><div class="stat-value">${v.weekVisits}</div><div class="stat-label">כניסות השבוע</div></div>
+            <div class="stat-item"><div class="stat-value">-</div><div class="stat-label">נתון נוסף</div></div>
+            <div class="stat-item"><div class="stat-value">-</div><div class="stat-label">נתון נוסף</div></div>
           </div>
           <div class="activity-line${activityChanged}">פעילות אחרונה: <strong>${activity}</strong></div>
         </div>`;
