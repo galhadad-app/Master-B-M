@@ -262,7 +262,41 @@
     @media(max-width:720px){.report-row{grid-template-columns:1fr}.report-row .mini-btn{width:100%}}
 
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
-    @media(max-width:720px){.page{padding-top:12px}.top-title h1{font-size:26px}.row,.form-actions,.actions,.link-row{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(4,1fr)}.mini-btn{width:100%}.business-top{flex-direction:column}.topbar{display:grid}}
+    @media(max-width:720px){.page{padding-top:12px}.top-title h1{font-size:26px}.row,.form-actions,.actions,.link-row{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(4,1fr)}.mini-btn{width:100%}.topbar{display:grid}}
+
+    /* Keep business details aligned: info on the right, plan badge on the left — also on mobile */
+    .business-top{
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:flex-start;
+    }
+    .business-badges{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:6px;
+      min-width:max-content;
+    }
+    @media(max-width:720px){
+      .business-top{
+        display:grid;
+        grid-template-columns:1fr auto;
+        align-items:flex-start;
+      }
+      .business-badges{
+        align-items:flex-start;
+      }
+    }
+    @media(max-width:390px){
+      .business-top{
+        gap:8px;
+      }
+      .badge{
+        padding:7px 9px;
+        font-size:11px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -983,9 +1017,9 @@
           <div class="business-top">
             <div>
               <div class="business-title">${html(name)}</div>
-              <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}</div>
+              <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}<br>תאריך פתיחה: ${html(businessCreatedDate(b))}</div>
             </div>
-            <div><span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>${isBusinessFrozen(b) ? `<span class="badge frozen">מוקפא</span>` : ``}<div class="created-date">${html(businessCreatedDate(b))}</div></div>
+            <div class="business-badges"><span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>${isBusinessFrozen(b) ? `<span class="badge frozen">מוקפא</span>` : ``}</div>
           </div>
           ${renderStatsHtml(id)}
           <div class="link-label">קישור לאפליקציה</div>
