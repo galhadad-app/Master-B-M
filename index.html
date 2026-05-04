@@ -199,78 +199,66 @@
     .report-mini-data{display:none;}
     .reports-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
 
-    /* PDF: compact official report style */
+    /* PDF: soft classic premium report style */
     .pdf-source{
       position:absolute;top:0;left:0;width:794px;min-height:1123px;
-      background:#f7f7f5;color:#20242a;font-family:Arial,"Heebo",sans-serif;
-      direction:rtl;padding:64px;z-index:999999;overflow:hidden;box-shadow:none;
+      background:#f4f1ea;color:#222;font-family:Arial,"Heebo",sans-serif;
+      direction:rtl;padding:54px;z-index:999999;overflow:hidden;box-shadow:none;
     }
     .pdf-card{
-      min-height:995px;background:#fff;border:1px solid #e2e2dc;border-radius:4px;
-      padding:58px 66px 44px;box-shadow:none;position:relative;
+      min-height:1015px;background:#fff;border:1px solid #ded8cc;border-radius:18px;
+      padding:54px 58px 42px;box-shadow:none;position:relative;overflow:hidden;
     }
-    .pdf-header{
-      padding-bottom:18px;margin-bottom:34px;border-bottom:2px solid #1f2933;
-      display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    .pdf-card:before{
+      content:"";position:absolute;top:0;right:0;left:0;height:8px;
+      background:linear-gradient(90deg,#d8c49a,#f1e6cf,#d8c49a);
     }
-    .pdf-title h1{margin:0;color:#111827;font-size:31px;font-weight:900;line-height:1.2;letter-spacing:-.3px}
-    .pdf-title p{margin:8px 0 0;color:#6b7280;font-size:13px;line-height:1.5}
-    .pdf-date{color:#8a8f96;font-size:11px;line-height:1.7;text-align:left;white-space:nowrap}
-    .pdf-content{border:1px solid #e8e8e2;border-radius:6px;overflow:hidden;background:#fff;margin-top:6px}
-    .pdf-line{
-      display:grid;grid-template-columns:118px 1fr;align-items:stretch;min-height:86px;
-      border-bottom:1px solid #eeeeea;
+    .pdf-head{
+      display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;
+      padding-bottom:28px;border-bottom:1px solid #e8e1d5;margin-bottom:34px;
     }
-    .pdf-line:last-child{border-bottom:none}
-    .pdf-line-title{
-      padding:20px 18px;background:#fbfbfa;border-left:1px solid #eeeeea;
-      color:#151b23;font-size:16px;font-weight:900;display:flex;align-items:center;
-      direction:rtl;text-align:right;unicode-bidi:plaintext;word-spacing:2px;letter-spacing:.1px;
+    .pdf-kicker{font-size:12px;color:#9a8560;font-weight:900;letter-spacing:.7px;margin-bottom:10px;}
+    .pdf-business{font-size:34px;font-weight:900;color:#171717;line-height:1.15;margin:0 0 8px;letter-spacing:-.4px;}
+    .pdf-month{font-size:15px;color:#6f6a60;line-height:1.55;}
+    .pdf-date-box{
+      min-width:124px;border:1px solid #e6dfd2;border-radius:16px;background:#fbfaf7;
+      padding:14px 16px;text-align:center;color:#7a7469;
     }
-    .pdf-metrics{display:grid;grid-template-columns:repeat(2,1fr)}
-    .pdf-metrics.one{grid-template-columns:1fr}
-        .pdf-metrics.three{grid-template-columns:repeat(3,1fr)}
-    .pdf-metrics.three .pdf-metric{
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      gap:8px;
-      padding:18px 12px;
-      min-width:0;
+    .pdf-date-box .small{font-size:10px;color:#a49b8d;margin-bottom:6px;font-weight:800;}
+    .pdf-date-box .date{font-size:14px;color:#2b2b2b;font-weight:900;direction:ltr;}
+    .pdf-summary{
+      border:1px solid #e9e2d6;border-radius:20px;background:linear-gradient(180deg,#fff,#fcfbf8);
+      padding:26px;margin-bottom:28px;text-align:center;
     }
-    .pdf-metrics.three .pdf-label{
-      max-width:none;
-      width:100%;
-      text-align:center;
-      line-height:1.35;
-      white-space:normal;
-      word-spacing:1px;
+    .pdf-summary-label{font-size:13px;color:#8b806e;margin-bottom:8px;font-weight:800;}
+    .pdf-summary-value{font-size:52px;font-weight:900;color:#151515;line-height:1;direction:ltr;}
+    .pdf-summary-note{font-size:11px;color:#9b9489;margin-top:9px;}
+    .pdf-block{margin-bottom:24px;}
+    .pdf-block-title{
+      font-size:14px;font-weight:900;color:#2b2b2b;margin-bottom:10px;
+      display:flex;align-items:center;gap:10px;
     }
-    .pdf-metrics.three .pdf-value{
-      min-width:0;
-      text-align:center;
-      width:100%;
+    .pdf-block-title:before{
+      content:"";width:24px;height:1px;background:#d8c49a;display:inline-block;
     }
-    .pdf-metric{
-      padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:24px;
-      border-left:1px solid #f0f0ec;
-      direction:rtl;text-align:right;
+    .pdf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    .pdf-grid.three{grid-template-columns:repeat(3,1fr);}
+    .pdf-metric-card{
+      border:1px solid #ece5da;border-radius:18px;background:#fff;padding:18px 16px;
+      min-height:104px;display:flex;flex-direction:column;justify-content:space-between;
     }
-    .pdf-metric:last-child{border-left:none}
-    .pdf-label{
-      color:#66707c;font-size:13px;line-height:1.65;direction:rtl;text-align:right;
-      unicode-bidi:plaintext;letter-spacing:.15px;word-spacing:4px;white-space:normal;
-      display:inline-block;max-width:260px;
+    .pdf-metric-label{font-size:12px;color:#82786b;font-weight:800;line-height:1.35;}
+    .pdf-metric-value{font-size:34px;font-weight:900;color:#181818;line-height:1;direction:ltr;text-align:right;margin-top:14px;}
+    .pdf-wide{grid-column:1 / -1;}
+    .pdf-note{
+      margin-top:30px;padding-top:16px;border-top:1px solid #eee7dc;color:#8d8579;
+      font-size:11.5px;line-height:1.8;text-align:center;word-spacing:2px;letter-spacing:.05px;
     }
-    .pdf-value{color:#111827;font-size:31px;font-weight:900;line-height:1;direction:ltr;text-align:left;white-space:nowrap;min-width:58px}
-    .pdf-value.percent{font-size:36px}
-    .pdf-note{margin-top:18px;color:#7a828c;font-size:11.5px;line-height:1.75;text-align:center}
     .pdf-footer{
-      position:absolute;right:66px;left:66px;bottom:40px;border-top:1px solid #eeeeea;
-      padding-top:12px;display:flex;justify-content:space-between;gap:20px;color:#9aa0a8;font-size:10.5px;
+      position:absolute;right:58px;left:58px;bottom:34px;border-top:1px solid #eee7dc;
+      padding-top:12px;display:flex;justify-content:space-between;gap:20px;color:#9a9286;font-size:10.5px;
     }
-    .pdf-footer .ltr{direction:ltr;text-align:left}
+    .pdf-footer .ltr{direction:ltr;text-align:left;unicode-bidi:bidi-override;}
     @media(max-width:720px){.report-row{grid-template-columns:1fr}.report-row .mini-btn{width:100%}}
 
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:.25s ease;width:min(92vw,520px);padding:14px 16px;border-radius:18px;text-align:center;z-index:99999;box-shadow:var(--shadow);background:#101827;border:1px solid rgba(255,255,255,.10);color:var(--text)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:#351111;border-color:rgba(255,123,123,.55)}
@@ -712,43 +700,62 @@
       wrap.className="pdf-source";
       wrap.innerHTML=`
         <div class="pdf-card">
-          <div class="pdf-header">
-            <div class="pdf-title">
-              <h1>${html(name)} · ${html(label)}</h1>
-              <p>דו״ח פעילות חודשי</p>
+          <div class="pdf-head">
+            <div>
+              <div class="pdf-kicker">דו״ח פעילות חודשי</div>
+              <h1 class="pdf-business">${html(name)}</h1>
+              <div class="pdf-month">${html(label)}</div>
             </div>
-            <div class="pdf-date">תאריך הפקה<br><strong>${formatHebDate(new Date())}</strong></div>
+            <div class="pdf-date-box">
+              <div class="small">תאריך הפקה</div>
+              <div class="date">${formatHebDate(new Date())}</div>
+            </div>
           </div>
 
-          <div class="pdf-content">
-            <div class="pdf-line">
-              <div class="pdf-line-title">לקוחות</div>
-              <div class="pdf-metrics">
-                <div class="pdf-metric"><span class="pdf-label">סה״כ</span><span class="pdf-value">${r.totalCustomers}</span></div>
-                <div class="pdf-metric"><span class="pdf-label">חדשים</span><span class="pdf-value">${r.returningCustomers}</span></div>
+          <div class="pdf-summary">
+            <div class="pdf-summary-label">יחס המרה מהאפליקציה</div>
+            <div class="pdf-summary-value">${r.conversion}%</div>
+            <div class="pdf-summary-note">מחושב לפי תורי אפליקציה מול כניסות</div>
+          </div>
+
+          <div class="pdf-block">
+            <div class="pdf-block-title">לקוחות</div>
+            <div class="pdf-grid">
+              <div class="pdf-metric-card">
+                <div class="pdf-metric-label">סה״כ</div>
+                <div class="pdf-metric-value">${r.totalCustomers}</div>
+              </div>
+              <div class="pdf-metric-card">
+                <div class="pdf-metric-label">חדשים</div>
+                <div class="pdf-metric-value">${r.returningCustomers}</div>
               </div>
             </div>
+          </div>
 
-            <div class="pdf-line">
-              <div class="pdf-line-title">תורים</div>
-              <div class="pdf-metrics three">
-                <div class="pdf-metric"><span class="pdf-label">אפליקציה</span><span class="pdf-value">${r.monthAppAppointments}</span></div>
-                <div class="pdf-metric"><span class="pdf-label">ווצאפ</span><span class="pdf-value">${r.monthWhatsappAppointments}</span></div>
-                <div class="pdf-metric"><span class="pdf-label">סה״כ</span><span class="pdf-value">${r.monthAppointments}</span></div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">תורים</div>
+            <div class="pdf-grid three">
+              <div class="pdf-metric-card">
+                <div class="pdf-metric-label">אפליקציה</div>
+                <div class="pdf-metric-value">${r.monthAppAppointments}</div>
+              </div>
+              <div class="pdf-metric-card">
+                <div class="pdf-metric-label">ווצאפ</div>
+                <div class="pdf-metric-value">${r.monthWhatsappAppointments}</div>
+              </div>
+              <div class="pdf-metric-card">
+                <div class="pdf-metric-label">סה״כ</div>
+                <div class="pdf-metric-value">${r.monthAppointments}</div>
               </div>
             </div>
+          </div>
 
-            <div class="pdf-line">
-              <div class="pdf-line-title">כניסות</div>
-              <div class="pdf-metrics one">
-                <div class="pdf-metric"><span class="pdf-label">כניסות לאפליקציה</span><span class="pdf-value">${r.monthVisits}</span></div>
-              </div>
-            </div>
-
-            <div class="pdf-line">
-              <div class="pdf-line-title">המרה</div>
-              <div class="pdf-metrics one">
-                <div class="pdf-metric"><span class="pdf-label">יחס המרה אפליקציה לכניסות</span><span class="pdf-value percent">${r.conversion}%</span></div>
+          <div class="pdf-block">
+            <div class="pdf-block-title">כניסות</div>
+            <div class="pdf-grid">
+              <div class="pdf-metric-card pdf-wide">
+                <div class="pdf-metric-label">סה״כ כניסות לאפליקציה</div>
+                <div class="pdf-metric-value">${r.monthVisits}</div>
               </div>
             </div>
           </div>
@@ -770,7 +777,7 @@
           html2canvas:{
             scale:2,
             useCORS:true,
-            backgroundColor:"#f7f7f5",
+            backgroundColor:"#f4f1ea",
             width:794,
             height:1123,
             windowWidth:794,
