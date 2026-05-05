@@ -84,7 +84,7 @@
     .row-arrow{color:var(--primary);font-weight:900;font-size:20px}.empty{text-align:center;padding:30px 12px;color:var(--muted);line-height:1.8;border:1px dashed rgba(255,255,255,.10);border-radius:22px;background:rgba(255,255,255,.02)}
     .detail-card{border-radius:24px;border:1px solid rgba(255,255,255,.09);background:rgba(5,12,22,.34);padding:16px;margin-top:12px}
     .business-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}.meta{color:var(--muted);font-size:13px;line-height:1.75}.badge{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;background:rgba(140,240,181,.12);color:#bcf8d1;border:1px solid rgba(140,240,181,.22);white-space:nowrap}.badge.pro{background:rgba(114,201,255,.11);color:#b9e9ff;border-color:rgba(114,201,255,.24)}.badge.premium{background:rgba(230,193,115,.12);color:#ffe8b2;border-color:rgba(230,193,115,.25)}.badge.frozen{background:rgba(255,123,123,.12);color:#ffc8c8;border-color:rgba(255,123,123,.28);margin-inline-start:6px}
-    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+    .business-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.link-label{margin:12px 0 6px;color:rgba(168,179,199,.86);font-size:12px}.link-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.link-box{direction:ltr;text-align:left;background:#09101d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 13px;color:#9fdcff;word-break:break-all;font-size:13px;min-height:42px;display:flex;align-items:center}.mini-btn{min-width:92px;padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:#111b2c;color:var(--text);cursor:pointer;font-weight:900;font-size:12px}.actions{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:14px}
     .stats-wrap{margin:10px 0 2px;display:grid;gap:7px}
     .stats-strip{
       display:grid;grid-template-columns:repeat(4,1fr);align-items:center;
@@ -335,8 +335,13 @@
         <div class="hint">חייב להתחיל ב־972 ולהיות בדיוק 12 ספרות.</div>
 
         <div class="row">
-          <div><label>חבילה</label><select id="plan"><option value="basic">בסיסי</option><option value="pro">מתקדם</option><option value="premium">פרימיום</option></select></div>
+          <div><label>בוט וואטסאפ</label><select id="whatsappEnabled"><option value="false">כבוי — אפליקציה בלבד</option><option value="true">פעיל — עם בוט וואטסאפ</option></select></div>
+          <div><label>גישת בעל עסק</label><select id="ownerAccess"><option value="false">סגורה — רק אני מנהל</option><option value="true">פתוחה — הלקוח יכול לערוך</option></select></div>
+        </div>
+
+        <div class="row">
           <div><label>קוד בעל עסק</label><input id="ownerCode" inputmode="numeric" maxlength="4" placeholder="1234" /></div>
+          <div><label>סטטוס פנימי</label><input value="ניהול מרכזי אצלך" disabled /></div>
         </div>
 
         <button class="btn primary" id="saveBtn">שמור עסק</button>
@@ -403,7 +408,22 @@
       {text:"תספורת ילד",price:"40",label:"תספורת ילד - ₪40",value:"תספורת ילד - ₪40"}
     ];
 
-    const planLabels = {basic:"בסיסי",pro:"מתקדם",premium:"פרימיום"};
+    const planLabels = {basic:"אפליקציה בלבד",whatsapp:"עם בוט וואטסאפ"};
+    const yesNoLabels = {true:"פעיל",false:"כבוי"};
+
+    function boolValue(value, fallback=false){
+      if(value === true || value === "true") return true;
+      if(value === false || value === "false") return false;
+      return fallback;
+    }
+
+    function whatsappEnabledForBusiness(b){
+      return boolValue(b?.whatsappEnabled, boolValue(b?.botEnabled, false));
+    }
+
+    function ownerAccessForBusiness(b){
+      return boolValue(b?.ownerAccess, boolValue(b?.clientOwnerAccess, false));
+    }
 
     let businesses = [];
     let editingId = "";
@@ -426,7 +446,8 @@
       businessName:document.getElementById("businessName"),
       businessId:document.getElementById("businessId"),
       whatsappNumber:document.getElementById("whatsappNumber"),
-      plan:document.getElementById("plan"),
+      whatsappEnabled:document.getElementById("whatsappEnabled"),
+      ownerAccess:document.getElementById("ownerAccess"),
       ownerCode:document.getElementById("ownerCode"),
       saveBtn:document.getElementById("saveBtn"),
       resetBtn:document.getElementById("resetBtn"),
@@ -873,7 +894,8 @@
       el.businessId.value="";
       el.businessId.disabled=false;
       el.whatsappNumber.value="";
-      el.plan.value="basic";
+      el.whatsappEnabled.value="false";
+      el.ownerAccess.value="false";
       el.ownerCode.value="1234";
       el.saveStatus.textContent="";
     }
@@ -888,7 +910,8 @@
       el.businessId.value=id;
       el.businessId.disabled=true;
       el.whatsappNumber.value=cleanPhone(b.whatsappNumber||b.phone||"");
-      el.plan.value=b.plan||"basic";
+      el.whatsappEnabled.value=whatsappEnabledForBusiness(b) ? "true" : "false";
+      el.ownerAccess.value=ownerAccessForBusiness(b) ? "true" : "false";
       el.ownerCode.value=digits(b.ownerCode||"1234").slice(0,4);
       showScreen("form");
     }
@@ -897,7 +920,8 @@
       const businessName=el.businessName.value.trim();
       const businessId=cleanId(el.businessId.value);
       const whatsappNumber=cleanPhone(el.whatsappNumber.value);
-      const plan=el.plan.value;
+      const whatsappEnabled=el.whatsappEnabled.value === "true";
+      const ownerAccess=el.ownerAccess.value === "true";
       const ownerCode=digits(el.ownerCode.value).slice(0,4)||"1234";
 
       el.businessId.value=businessId;
@@ -923,7 +947,11 @@
           name:businessName,
           whatsappNumber,
           phone:whatsappNumber,
-          plan,
+          whatsappEnabled,
+          botEnabled:whatsappEnabled,
+          ownerAccess,
+          clientOwnerAccess:ownerAccess,
+          plan:whatsappEnabled ? "whatsapp" : "basic",
           ownerCode,
           appUrl:appLink(businessId),
           whatsappUrl:waLink(businessId,whatsappNumber),
@@ -987,6 +1015,51 @@
       }
     }
 
+    async function toggleWhatsappFeature(id){
+      const b=businesses.find(x=>x.id===id);
+      if(!b) return;
+      const next=!whatsappEnabledForBusiness(b);
+      const msg=next
+        ? "להפעיל בוט וואטסאפ לעסק הזה?"
+        : "לכבות את בוט הוואטסאפ לעסק הזה? האפליקציה עצמה תמשיך לעבוד.";
+      if(!confirm(msg)) return;
+      try{
+        await db.collection(COLLECTION).doc(id).set({
+          whatsappEnabled:next,
+          botEnabled:next,
+          plan:next ? "whatsapp" : "basic",
+          updatedAtMs:Date.now(),
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        },{merge:true});
+        showToast(next ? "בוט הוואטסאפ הופעל" : "בוט הוואטסאפ כובה");
+      }catch(err){
+        console.error(err);
+        showToast("עדכון וואטסאפ נכשל",true);
+      }
+    }
+
+    async function toggleOwnerAccess(id){
+      const b=businesses.find(x=>x.id===id);
+      if(!b) return;
+      const next=!ownerAccessForBusiness(b);
+      const msg=next
+        ? "לפתוח ללקוח גישה לעריכת ההגדרות באפליקציה?"
+        : "לסגור ללקוח את גישת העריכה ולהשאיר שליטה אצלך בלבד?";
+      if(!confirm(msg)) return;
+      try{
+        await db.collection(COLLECTION).doc(id).set({
+          ownerAccess:next,
+          clientOwnerAccess:next,
+          updatedAtMs:Date.now(),
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        },{merge:true});
+        showToast(next ? "גישת בעל העסק נפתחה" : "גישת בעל העסק נסגרה");
+      }catch(err){
+        console.error(err);
+        showToast("עדכון גישת בעל עסק נכשל",true);
+      }
+    }
+
     async function deleteBusiness(id){
       if(!confirm("למחוק את העסק לגמרי מ־businessSettings?")) return;
       try{
@@ -1009,18 +1082,19 @@
       const id=b.id;
       const name=b.businessName||b.name||id;
       const phone=cleanPhone(b.whatsappNumber||b.phone||"");
-      const plan=b.plan||"basic";
+      const whatsappOn=whatsappEnabledForBusiness(b);
+      const ownerOpen=ownerAccessForBusiness(b);
       const app=appLink(id);
       const wa=validPhone(phone)?waLink(id,phone):"מספר וואטסאפ לא תקין";
-      const badgeClass=plan==="premium"?"premium":(plan==="pro"?"pro":"");
+      const badgeClass=whatsappOn ? "premium" : "";
       el.businessDetails.innerHTML=`
         <div class="detail-card">
           <div class="business-top">
             <div>
               <div class="business-title">${html(name)}</div>
-              <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}<br>תאריך פתיחה: ${html(businessCreatedDate(b))}</div>
+              <div class="meta">ID: ${html(id)}<br>וואטסאפ: ${html(phone||"-")}<br>בוט וואטסאפ: ${whatsappOn ? "פעיל" : "כבוי"}<br>גישת בעל עסק: ${ownerOpen ? "פתוחה" : "סגורה"}<br>קוד בעל עסק: ${html(b.ownerCode||"-")}<br>תאריך פתיחה: ${html(businessCreatedDate(b))}</div>
             </div>
-            <div class="business-badges"><span class="badge ${badgeClass}">${html(planLabels[plan]||plan)}</span>${isBusinessFrozen(b) ? `<span class="badge frozen">מוקפא</span>` : ``}</div>
+            <div class="business-badges"><span class="badge ${badgeClass}">${whatsappOn ? "עם בוט וואטסאפ" : "אפליקציה בלבד"}</span><span class="badge ${ownerOpen ? "pro" : ""}">${ownerOpen ? "גישה פתוחה" : "שליטה אצלך"}</span>${isBusinessFrozen(b) ? `<span class="badge frozen">מוקפא</span>` : ``}</div>
           </div>
           ${renderStatsHtml(id)}
           <div class="link-label">קישור לאפליקציה</div>
@@ -1031,6 +1105,8 @@
             <button class="btn ghost small" onclick="fillForm('${js(id)}')">ערוך</button>
             <button class="btn ghost small" onclick="window.open('${js(app)}','_blank')">פתח אפליקציה</button>
             <button class="btn ghost small" onclick="openReports('${js(id)}')">דוחות</button>
+            <button class="btn ${whatsappOn ? "unfreeze" : "freeze"} small" onclick="toggleWhatsappFeature('${js(id)}')">${whatsappOn ? "כבה בוט" : "הפעל בוט"}</button>
+            <button class="btn ${ownerOpen ? "unfreeze" : "freeze"} small" onclick="toggleOwnerAccess('${js(id)}')">${ownerOpen ? "סגור גישה" : "פתח גישה"}</button>
             <button class="btn ${isBusinessFrozen(b) ? "unfreeze" : "freeze"} small" onclick="toggleBusinessFreeze('${js(id)}')">${isBusinessFrozen(b) ? "הפעל עסק" : "הקפא עסק"}</button>
             <button class="btn danger small" onclick="deleteBusiness('${js(id)}')">מחק</button>
           </div>
@@ -1040,7 +1116,7 @@
     function render(){
       const q=String(el.searchInput.value||"").toLowerCase().trim();
       const list=businesses.filter(b=>{
-        const t=[b.id,b.businessName,b.name,b.whatsappNumber,b.phone,b.plan].join(" ").toLowerCase();
+        const t=[b.id,b.businessName,b.name,b.whatsappNumber,b.phone,b.plan,whatsappEnabledForBusiness(b)?"וואטסאפ פעיל":"וואטסאפ כבוי",ownerAccessForBusiness(b)?"גישה פתוחה":"גישה סגורה"].join(" ").toLowerCase();
         return !q || t.includes(q);
       });
       if(!list.length){el.businessList.innerHTML='<div class="empty">אין עסקים להצגה. לחץ על הוסף עסק כדי ליצור עסק חדש.</div>';return}
@@ -1048,10 +1124,11 @@
         const id=b.id;
         const name=b.businessName||b.name||id;
         const phone=cleanPhone(b.whatsappNumber||b.phone||"");
-        const plan=b.plan||"basic";
+        const whatsappOn=whatsappEnabledForBusiness(b);
+        const ownerOpen=ownerAccessForBusiness(b);
         const state=frozenLabel(b);
         return `<button class="business-row" onclick="openDetails('${js(id)}')">
-          <div><div class="row-title">${html(name)}</div><div class="row-sub">${html(id)} · ${html(phone||"-")} · ${html(planLabels[plan]||plan)} · ${html(state)}</div></div>
+          <div><div class="row-title">${html(name)}</div><div class="row-sub">${html(id)} · ${html(phone||"-")} · בוט: ${whatsappOn ? "פעיל" : "כבוי"} · גישה: ${ownerOpen ? "פתוחה" : "סגורה"} · ${html(state)}</div></div>
           <div class="row-arrow">‹</div>
         </button>`;
       }).join("");
