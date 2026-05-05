@@ -372,12 +372,12 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyCba0XlBoAWJ1eiH6wqer74sSiMyRKfK2s",
-      authDomain: "game1-9d372.firebaseapp.com",
-      projectId: "game1-9d372",
-      storageBucket: "game1-9d372.appspot.com",
-      messagingSenderId: "387028062033",
-      appId: "1:387028062033:web:7bf29040c7bb4b15d54d70"
+        apiKey: 'AIzaSyA3gamCGVxRnQOYxVcg2C8CasBjzNiVGcM',
+        authDomain: 'gal-business-system.firebaseapp.com',
+        projectId: 'gal-business-system',
+        storageBucket: 'gal-business-system.firebasestorage.app',
+        messagingSenderId: '81941134785',
+        appId: '1:81941134785:web:98069b8c50146441fb8340'
     };
 
     if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -688,8 +688,9 @@
       const monthAppointments=monthAppAppointments + monthWhatsappAppointments;
       const totalCustomers=Object.keys(customerCounts).length;
       const returningCustomers=Object.values(customerCounts).filter(n=>n>1).length;
+      const newCustomers=Object.values(customerCounts).filter(n=>n===1).length;
       const conversion=monthVisits > 0 ? Math.round((monthAppAppointments / monthVisits) * 100) : 0;
-      return {monthVisits,monthAppointments,monthAppAppointments,monthWhatsappAppointments,totalCustomers,returningCustomers,conversion};
+      return {monthVisits,monthAppointments,monthAppAppointments,monthWhatsappAppointments,totalCustomers,returningCustomers,newCustomers,conversion};
     }
 
     function getAvailableReportMonths(id){
@@ -761,7 +762,7 @@
               </div>
               <div class="pdf-metric-card">
                 <div class="pdf-metric-label">חדשים</div>
-                <div class="pdf-metric-value">${r.returningCustomers}</div>
+                <div class="pdf-metric-value">${r.newCustomers}</div>
               </div>
             </div>
           </div>
